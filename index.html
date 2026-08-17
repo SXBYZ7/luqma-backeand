@@ -1,1668 +1,1042 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>لُقمة V3</title>
-
-<style>
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-
-:root{
-    --bg:#090711;
-    --card:rgba(255,255,255,.075);
-    --card2:rgba(255,255,255,.11);
-    --border:rgba(255,255,255,.13);
-    --text:#fff;
-    --muted:#aaa6b8;
-    --purple:#8b5cf6;
-    --purple2:#a78bfa;
-    --green:#35d07f;
-    --red:#ff5577;
-    --blue:#4da6ff;
-}
-
-body{
-    margin:0;
-    background:
-      radial-gradient(circle at 15% 5%,rgba(139,92,246,.25),transparent 30%),
-      radial-gradient(circle at 90% 25%,rgba(77,166,255,.12),transparent 25%),
-      var(--bg);
-    color:var(--text);
-    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-    min-height:100vh;
-}
-
-button,input,textarea{
-    font-family:inherit;
-}
-
-.app{
-    width:100%;
-    max-width:600px;
-    margin:auto;
-    min-height:100vh;
-    padding-bottom:100px;
-}
-
-/* HEADER */
-
-.header{
-    padding:22px 18px 12px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.logoBox{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.logo{
-    width:52px;
-    height:52px;
-    border-radius:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:27px;
-    background:linear-gradient(135deg,#8b5cf6,#5b21b6);
-    box-shadow:0 10px 30px rgba(139,92,246,.35);
-}
-
-.brand h1{
-    margin:0;
-    font-size:25px;
-}
-
-.brand p{
-    margin:3px 0 0;
-    color:var(--muted);
-    font-size:12px;
-}
-
-.iconBtn{
-    width:44px;
-    height:44px;
-    border-radius:15px;
-    border:1px solid var(--border);
-    background:var(--card);
-    color:white;
-    font-size:19px;
-}
-
-/* HERO */
-
-.hero{
-    margin:10px 16px 18px;
-    padding:22px;
-    border:1px solid var(--border);
-    border-radius:28px;
-    background:
-      linear-gradient(135deg,rgba(139,92,246,.2),rgba(255,255,255,.04));
-    backdrop-filter:blur(20px);
-}
-
-.hero h2{
-    margin:0 0 8px;
-    font-size:23px;
-}
-
-.hero p{
-    color:#bdb8ca;
-    margin:0;
-    line-height:1.7;
-    font-size:13px;
-}
-
-.heroBtns{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-top:18px;
-}
-
-.mainBtn{
-    border:0;
-    padding:15px 12px;
-    border-radius:18px;
-    color:white;
-    font-weight:800;
-    font-size:14px;
-}
-
-.photoBtn{
-    background:linear-gradient(135deg,#8b5cf6,#6d28d9);
-}
-
-.textBtn{
-    background:var(--card2);
-    border:1px solid var(--border);
-}
-
-/* STATS */
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    padding:0 16px;
-}
-
-.stat{
-    padding:15px 8px;
-    text-align:center;
-    border:1px solid var(--border);
-    background:var(--card);
-    border-radius:20px;
-    backdrop-filter:blur(16px);
-}
-
-.statIcon{
-    font-size:18px;
-}
-
-.statValue{
-    font-size:21px;
-    font-weight:900;
-    margin-top:4px;
-}
-
-.statLabel{
-    color:var(--muted);
-    font-size:10px;
-}
-
-/* SECTIONS */
-
-.section{
-    margin:22px 16px 0;
-}
-
-.sectionTitle{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:12px;
-}
-
-.sectionTitle h3{
-    margin:0;
-    font-size:17px;
-}
-
-.sectionTitle span{
-    color:var(--muted);
-    font-size:11px;
-}
-
-.card{
-    border:1px solid var(--border);
-    background:var(--card);
-    border-radius:24px;
-    padding:17px;
-    backdrop-filter:blur(18px);
-}
-
-/* URL */
-
-.urlBox{
-    display:flex;
-    gap:8px;
-}
-
-input,textarea{
-    width:100%;
-    border:1px solid var(--border);
-    background:rgba(0,0,0,.22);
-    color:white;
-    outline:none;
-    border-radius:16px;
-    padding:14px;
-    font-size:13px;
-}
-
-input::placeholder,
-textarea::placeholder{
-    color:#777383;
-}
-
-textarea{
-    min-height:130px;
-    resize:none;
-}
-
-.urlBtn{
-    min-width:70px;
-    border:0;
-    border-radius:16px;
-    color:white;
-    background:linear-gradient(135deg,#8b5cf6,#6d28d9);
-    font-weight:800;
-}
-
-/* DROPZONE */
-
-.dropzone{
-    border:1px dashed rgba(167,139,250,.55);
-    border-radius:22px;
-    padding:25px 15px;
-    text-align:center;
-    background:rgba(139,92,246,.06);
-    cursor:pointer;
-}
-
-.dropIcon{
-    font-size:38px;
-}
-
-.dropzone h4{
-    margin:8px 0 5px;
-}
-
-.dropzone p{
-    margin:0;
-    color:var(--muted);
-    font-size:11px;
-}
-
-#imageInput{
-    display:none;
-}
-
-.preview{
-    display:none;
-    margin-top:12px;
-    overflow:hidden;
-    border-radius:20px;
-}
-
-.preview img{
-    width:100%;
-    max-height:300px;
-    object-fit:cover;
-    display:block;
-}
-
-/* ANALYZE */
-
-.analyzeBtn{
-    width:100%;
-    border:0;
-    border-radius:18px;
-    padding:16px;
-    color:white;
-    background:linear-gradient(135deg,#8b5cf6,#6d28d9);
-    font-size:15px;
-    font-weight:900;
-    margin-top:12px;
-}
-
-.analyzeBtn:disabled{
-    opacity:.45;
-}
-
-/* LOADING */
-
-.loading{
-    display:none;
-    text-align:center;
-    padding:25px;
-}
-
-.spinner{
-    width:42px;
-    height:42px;
-    border:4px solid rgba(255,255,255,.12);
-    border-top-color:#a78bfa;
-    border-radius:50%;
-    animation:spin .8s linear infinite;
-    margin:auto;
-}
-
-@keyframes spin{
-    to{transform:rotate(360deg)}
-}
-
-/* RESULT */
-
-.result{
-    display:none;
-}
-
-.resultHero{
-    border-radius:24px;
-    padding:20px;
-    background:
-      linear-gradient(135deg,rgba(139,92,246,.25),rgba(255,255,255,.05));
-    border:1px solid var(--border);
-}
-
-.resultHero h2{
-    margin:0;
-    font-size:22px;
-}
-
-.calorieBig{
-    font-size:38px;
-    font-weight:1000;
-    margin-top:10px;
-}
-
-.calorieBig small{
-    font-size:13px;
-    color:var(--muted);
-    font-weight:500;
-}
-
-.macros{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:9px;
-    margin-top:14px;
-}
-
-.macro{
-    padding:12px 6px;
-    text-align:center;
-    border-radius:17px;
-    background:rgba(255,255,255,.06);
-}
-
-.macro b{
-    display:block;
-    font-size:17px;
-}
-
-.macro span{
-    font-size:10px;
-    color:var(--muted);
-}
-
-.resultBlock{
-    margin-top:12px;
-    padding:17px;
-    border-radius:21px;
-    background:var(--card);
-    border:1px solid var(--border);
-}
-
-.resultBlock h4{
-    margin:0 0 13px;
-    font-size:15px;
-}
-
-.ingredient{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    padding:11px 0;
-    border-bottom:1px solid rgba(255,255,255,.07);
-    font-size:13px;
-}
-
-.ingredient:last-child{
-    border-bottom:0;
-}
-
-.amount{
-    color:#b79cff;
-    white-space:nowrap;
-}
-
-.step{
-    display:flex;
-    gap:10px;
-    margin-bottom:12px;
-    line-height:1.7;
-    font-size:13px;
-}
-
-.stepNum{
-    flex:none;
-    width:27px;
-    height:27px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(139,92,246,.2);
-    color:#c4b5fd;
-    font-weight:900;
-}
-
-/* HISTORY */
-
-.historyItem{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:14px;
-    border-radius:17px;
-    background:rgba(255,255,255,.045);
-    margin-bottom:8px;
-}
-
-.historyItem:last-child{
-    margin-bottom:0;
-}
-
-.historyName{
-    font-weight:700;
-    font-size:13px;
-}
-
-.historyDate{
-    color:var(--muted);
-    font-size:10px;
-    margin-top:3px;
-}
-
-.historyCalories{
-    font-weight:900;
-    color:#c4b5fd;
-}
-
-/* TOAST */
-
-.toast{
-    position:fixed;
-    bottom:25px;
-    left:50%;
-    transform:translateX(-50%) translateY(120px);
-    width:calc(100% - 32px);
-    max-width:560px;
-    padding:15px 18px;
-    border-radius:18px;
-    background:#1b1726;
-    border:1px solid var(--border);
-    box-shadow:0 15px 50px rgba(0,0,0,.4);
-    transition:.3s;
-    z-index:100;
-    text-align:center;
-    font-size:13px;
-}
-
-.toast.show{
-    transform:translateX(-50%) translateY(0);
-}
-
-/* FOOTER */
-
-.footer{
-    text-align:center;
-    color:#666273;
-    font-size:10px;
-    padding:30px 0;
-}
-
-.hidden{
-    display:none!important;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>لُقمة - مساعدك الغذائي</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Tahoma, Arial, sans-serif;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top right, rgba(190, 160, 55, 0.10), transparent 35%),
+        #080808;
+      color: #f5f2e8;
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    textarea {
+      font-family: inherit;
+    }
+
+    /* =========================
+       Header
+    ========================= */
+
+    header {
+      height: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(8,8,8,0.78);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .logo {
+      width: 43px;
+      height: 43px;
+      border-radius: 14px;
+      background: #b7a45a;
+      color: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 23px;
+      font-weight: bold;
+      box-shadow: 0 8px 25px rgba(183,164,90,0.18);
+    }
+
+    .brand-text h1 {
+      font-size: 21px;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-text span {
+      color: #aaa590;
+      font-size: 11px;
+    }
+
+    .status {
+      border: 1px solid rgba(183,164,90,0.25);
+      color: #c7b76d;
+      background: rgba(183,164,90,0.08);
+      padding: 8px 12px;
+      border-radius: 30px;
+      font-size: 11px;
+    }
+
+    /* =========================
+       Main
+    ========================= */
+
+    main {
+      width: min(950px, 92%);
+      margin: auto;
+      padding: 42px 0 70px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .hero h2 {
+      font-size: clamp(31px, 7vw, 55px);
+      margin-bottom: 12px;
+      letter-spacing: -2px;
+    }
+
+    .hero h2 span {
+      color: #b7a45a;
+    }
+
+    .hero p {
+      color: #96948b;
+      font-size: 14px;
+      line-height: 1.8;
+      max-width: 570px;
+      margin: auto;
+    }
+
+    /* =========================
+       Glass Card
+    ========================= */
+
+    .glass {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.075);
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.35),
+        inset 0 1px rgba(255,255,255,0.035);
+      backdrop-filter: blur(18px);
+      border-radius: 25px;
+    }
+
+    /* =========================
+       Upload
+    ========================= */
+
+    .upload-card {
+      padding: 25px;
+      margin-bottom: 22px;
+    }
+
+    .upload-area {
+      min-height: 260px;
+      border: 1px dashed rgba(183,164,90,0.38);
+      border-radius: 21px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 25px;
+      cursor: pointer;
+      transition: .25s;
+      background: rgba(183,164,90,0.025);
+    }
+
+    .upload-area:hover {
+      background: rgba(183,164,90,0.07);
+      border-color: rgba(183,164,90,0.65);
+      transform: translateY(-2px);
+    }
+
+    .upload-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(183,164,90,0.11);
+      color: #c6b66c;
+      font-size: 29px;
+      margin-bottom: 17px;
+    }
+
+    .upload-area h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .upload-area p {
+      color: #85837c;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    #imageInput {
+      display: none;
+    }
+
+    .preview {
+      width: 100%;
+      max-height: 360px;
+      object-fit: contain;
+      border-radius: 18px;
+      margin-top: 18px;
+      display: none;
+    }
+
+    /* =========================
+       Buttons
+    ========================= */
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn {
+      flex: 1;
+      min-height: 52px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      background: #b7a45a;
+      color: #101010;
+      box-shadow: 0 10px 25px rgba(183,164,90,0.13);
+    }
+
+    .btn-primary:hover {
+      background: #c4b36b;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.045);
+      color: #ddd9cd;
+      backdrop-filter: blur(12px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* =========================
+       Loading
+    ========================= */
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 25px;
+      color: #b7a45a;
+    }
+
+    .spinner {
+      width: 35px;
+      height: 35px;
+      border: 3px solid rgba(183,164,90,.15);
+      border-top-color: #b7a45a;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: auto auto 12px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =========================
+       Result
+    ========================= */
+
+    #result {
+      display: none;
+    }
+
+    .result-card {
+      padding: 25px;
+    }
+
+    .result-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    .result-title h2 {
+      font-size: 23px;
+    }
+
+    .result-title span {
+      color: #9e9b91;
+      font-size: 11px;
+    }
+
+    .calories {
+      background: rgba(183,164,90,0.08);
+      border: 1px solid rgba(183,164,90,0.17);
+      border-radius: 19px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .calories strong {
+      display: block;
+      color: #c5b46b;
+      font-size: 38px;
+      margin-bottom: 3px;
+    }
+
+    .calories span {
+      color: #96938a;
+      font-size: 12px;
+    }
+
+    .macros {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .macro {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 17px;
+      padding: 17px 10px;
+      text-align: center;
+    }
+
+    .macro strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .macro span {
+      color: #88867f;
+      font-size: 11px;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+
+    .section h3 {
+      font-size: 15px;
+      margin-bottom: 12px;
+      color: #d8d3c4;
+    }
+
+    .ingredients {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ingredient {
+      background: rgba(255,255,255,0.03);
+      padding: 12px 14px;
+      border-radius: 13px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .ingredient span {
+      color: #8d8a82;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .step {
+      background: rgba(255,255,255,0.03);
+      padding: 13px;
+      border-radius: 13px;
+      color: #b8b5ab;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       Error
+    ========================= */
+
+    .error {
+      display: none;
+      background: rgba(160,50,50,.10);
+      border: 1px solid rgba(180,70,70,.2);
+      color: #d99a9a;
+      border-radius: 15px;
+      padding: 15px;
+      margin-top: 15px;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       Footer
+    ========================= */
+
+    footer {
+      text-align: center;
+      color: #5e5c56;
+      font-size: 11px;
+      padding: 20px;
+    }
+
+    /* =========================
+       Mobile
+    ========================= */
+
+    @media (max-width: 600px) {
+
+      header {
+        padding: 0 15px;
+      }
+
+      .status {
+        display: none;
+      }
+
+      main {
+        width: 94%;
+        padding-top: 30px;
+      }
+
+      .upload-card,
+      .result-card {
+        padding: 17px;
+      }
+
+      .upload-area {
+        min-height: 230px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .macros {
+        gap: 7px;
+      }
+
+      .macro {
+        padding: 14px 5px;
+      }
+
+      .hero h2 {
+        font-size: 34px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="app">
+<header>
 
-<header class="header">
+  <div class="brand">
 
-    <div class="logoBox">
-
-        <div class="logo">🥄</div>
-
-        <div class="brand">
-            <h1>لُقمة</h1>
-            <p>ذكاء اصطناعي للطعام والتغذية</p>
-        </div>
-
+    <div class="logo">
+      ل
     </div>
 
-    <button class="iconBtn" onclick="scrollToHistory()">📊</button>
+    <div class="brand-text">
+      <h1>لُقمة</h1>
+      <span>مساعدك الغذائي الذكي</span>
+    </div>
+
+  </div>
+
+  <div class="status">
+    ● متصل
+  </div>
 
 </header>
 
 
-<section class="hero">
+<main>
 
-    <h2>شنو أكلت اليوم؟ 🍽️</h2>
+  <section class="hero">
+
+    <h2>
+      اعرف وجبتك مع <span>لُقمة</span>
+    </h2>
 
     <p>
-        صوّر وجبتك وخلي لُقمة تحاول تتعرف عليها
-        وتحسب لك السعرات والقيم الغذائية.
+      صوّر وجبتك وخلي لُقمة يحللها لك ويعطيك
+      السعرات والبروتين والكربوهيدرات والدهون
+      والمكونات بشكل تقريبي.
     </p>
 
-    <div class="heroBtns">
-
-        <button class="mainBtn photoBtn"
-                onclick="openCamera()">
-            📸 صوّر وجبتك
-        </button>
-
-        <button class="mainBtn textBtn"
-                onclick="scrollToText()">
-            ✍️ اكتب وصفة
-        </button>
-
-    </div>
-
-</section>
+  </section>
 
 
-<section class="stats">
+  <section class="glass upload-card">
 
-    <div class="stat">
-        <div class="statIcon">🔥</div>
-        <div class="statValue" id="todayCalories">0</div>
-        <div class="statLabel">سعرة اليوم</div>
-    </div>
+    <label
+      class="upload-area"
+      for="imageInput"
+      id="uploadArea"
+    >
 
-    <div class="stat">
-        <div class="statIcon">🥩</div>
-        <div class="statValue" id="todayProtein">0g</div>
-        <div class="statLabel">بروتين</div>
-    </div>
+      <div class="upload-icon">
+        📷
+      </div>
 
-    <div class="stat">
-        <div class="statIcon">🍽️</div>
-        <div class="statValue" id="mealCount">0</div>
-        <div class="statLabel">وجبات</div>
-    </div>
+      <h3>
+        اختر صورة الوجبة
+      </h3>
 
-</section>
+      <p>
+        اضغط هنا لاختيار صورة من جهازك
+      </p>
+
+      <img
+        id="preview"
+        class="preview"
+        alt="صورة الوجبة"
+      >
+
+    </label>
 
 
-<!-- URL -->
+    <input
+      type="file"
+      id="imageInput"
+      accept="image/*"
+    >
 
-<section class="section">
 
-    <div class="sectionTitle">
-        <h3>🔗 رابط وصفة</h3>
-        <span>TikTok / Instagram</span>
-    </div>
+    <div class="actions">
 
-    <div class="card">
+      <button
+        class="btn btn-primary"
+        id="analyzeBtn"
+        disabled
+      >
+        ✨ تحليل الوجبة
+      </button>
 
-        <div class="urlBox">
-
-            <input
-                id="recipeUrl"
-                type="url"
-                placeholder="ألصق رابط TikTok أو Instagram">
-
-            <button class="urlBtn"
-                    onclick="analyzeURL()">
-                تحليل
-            </button>
-
-        </div>
-
-        <div style="color:#777383;font-size:10px;margin-top:10px;line-height:1.7">
-            استخراج محتوى الفيديو الحقيقي يحتاج Endpoint خاص بالروابط في الـBackend.
-            لن نعتبر الرابط محللًا حتى يتم جلب محتواه فعليًا.
-        </div>
+      <button
+        class="btn btn-secondary"
+        id="clearBtn"
+      >
+        مسح
+      </button>
 
     </div>
 
-</section>
 
+    <div
+      class="loading"
+      id="loading"
+    >
 
-<!-- IMAGE -->
+      <div class="spinner"></div>
 
-<section class="section" id="cameraSection">
-
-    <div class="sectionTitle">
-        <h3>📸 تحليل صورة</h3>
-        <span>AI Vision</span>
-    </div>
-
-    <div class="card">
-
-        <label class="dropzone" for="imageInput">
-
-            <div class="dropIcon">📷</div>
-
-            <h4>اضغط لاختيار صورة الوجبة</h4>
-
-            <p>
-                اختر صورة واضحة قدر الإمكان
-            </p>
-
-        </label>
-
-        <input
-            id="imageInput"
-            type="file"
-            accept="image/*"
-            capture="environment">
-
-        <div class="preview" id="preview">
-            <img id="previewImage">
-        </div>
-
-        <button
-            id="imageAnalyzeBtn"
-            class="analyzeBtn"
-            disabled
-            onclick="analyzeImage()">
-
-            🔥 احسب سعرات الوجبة
-
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- TEXT -->
-
-<section class="section" id="textSection">
-
-    <div class="sectionTitle">
-        <h3>✍️ وصفة أو مكونات</h3>
-        <span>تحليل ذكي</span>
-    </div>
-
-    <div class="card">
-
-        <textarea
-            id="recipeText"
-            placeholder="مثال:
-صدر دجاج 200 غرام
-أرز كوب
-ملعقة زيت
-ملح وبهارات
-
-أو الصق وصفة كاملة هنا..."></textarea>
-
-        <button
-            class="analyzeBtn"
-            onclick="analyzeText()">
-
-            🧠 حلّل الوصفة
-
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- LOADING -->
-
-<section class="section loading" id="loading">
-
-    <div class="spinner"></div>
-
-    <div style="margin-top:13px;font-weight:800">
-        لُقمة تحلل الوجبة...
-    </div>
-
-    <div style="color:#888;font-size:11px;margin-top:5px">
-        قد يستغرق التحليل عدة ثوانٍ
-    </div>
-
-</section>
-
-
-<!-- RESULT -->
-
-<section class="section result" id="result">
-
-    <div class="sectionTitle">
-        <h3>📋 النتيجة</h3>
-        <span>تحليل لُقمة</span>
-    </div>
-
-
-    <div class="resultHero">
-
-        <h2 id="resultTitle">الوجبة</h2>
-
-        <div class="calorieBig">
-            <span id="resultCalories">0</span>
-            <small>سعرة حرارية</small>
-        </div>
-
-        <div class="macros">
-
-            <div class="macro">
-                <b id="resultProtein">0g</b>
-                <span>بروتين</span>
-            </div>
-
-            <div class="macro">
-                <b id="resultCarbs">0g</b>
-                <span>كربوهيدرات</span>
-            </div>
-
-            <div class="macro">
-                <b id="resultFat">0g</b>
-                <span>دهون</span>
-            </div>
-
-        </div>
+      <p>
+        لُقمة يحلل وجبتك...
+      </p>
 
     </div>
 
 
-    <div class="resultBlock">
+    <div
+      class="error"
+      id="error"
+    ></div>
 
-        <h4>🥗 المكونات</h4>
+  </section>
 
-        <div id="ingredients"></div>
+
+  <section
+    class="glass result-card"
+    id="result"
+  >
+
+    <div class="result-title">
+
+      <div>
+        <h2 id="mealTitle">
+          الوجبة
+        </h2>
+
+        <span>
+          تحليل تقريبي بالذكاء الاصطناعي
+        </span>
+      </div>
+
+    </div>
+
+
+    <div class="calories">
+
+      <strong id="calories">
+        0
+      </strong>
+
+      <span>
+        سعرة حرارية تقريبًا
+      </span>
 
     </div>
 
 
-    <div class="resultBlock">
+    <div class="macros">
 
-        <h4>👨‍🍳 خطوات التحضير</h4>
+      <div class="macro">
+        <strong id="protein">0</strong>
+        <span>بروتين غ</span>
+      </div>
 
-        <div id="steps"></div>
+      <div class="macro">
+        <strong id="carbs">0</strong>
+        <span>كربوهيدرات غ</span>
+      </div>
+
+      <div class="macro">
+        <strong id="fat">0</strong>
+        <span>دهون غ</span>
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>
+        🥗 المكونات
+      </h3>
+
+      <div
+        class="ingredients"
+        id="ingredients"
+      ></div>
 
     </div>
 
 
-    <button
-        class="analyzeBtn"
-        onclick="saveCurrentMeal()">
+    <div class="section">
 
-        💾 حفظ الوجبة
+      <h3>
+        👨‍🍳 طريقة التحضير
+      </h3>
 
-    </button>
-
-</section>
-
-
-<!-- HISTORY -->
-
-<section class="section" id="historySection">
-
-    <div class="sectionTitle">
-        <h3>🕘 وجباتك</h3>
-
-        <button
-            onclick="clearHistory()"
-            style="border:0;background:none;color:#ff6685;font-size:11px">
-
-            مسح
-
-        </button>
+      <div
+        class="steps"
+        id="steps"
+      ></div>
 
     </div>
 
-    <div class="card" id="history">
+  </section>
 
-        <div style="text-align:center;color:#777383;font-size:12px">
-            لا توجد وجبات محفوظة
-        </div>
-
-    </div>
-
-</section>
+</main>
 
 
-<div class="footer">
-    لُقمة V3 • مدعوم بالذكاء الاصطناعي
-</div>
-
-</div>
-
-
-<div class="toast" id="toast"></div>
+<footer>
+  لُقمة © 2026 — تحليل تقريبي وليس بديلاً عن المختص الغذائي
+</footer>
 
 
 <script>
 
-/* =========================================
-   إعدادات لُقمة
-========================================= */
+  /* =========================
+     عناصر الصفحة
+  ========================= */
 
-const API_URL =
-    "https://luqma-backeand-production.up.railway.app";
-
-
-let selectedImage = null;
-let currentResult = null;
-
-
-/* =========================================
-   عناصر الصفحة
-========================================= */
-
-const imageInput =
+  const imageInput =
     document.getElementById("imageInput");
 
-const preview =
+  const preview =
     document.getElementById("preview");
 
-const previewImage =
-    document.getElementById("previewImage");
+  const analyzeBtn =
+    document.getElementById("analyzeBtn");
 
-const imageAnalyzeBtn =
-    document.getElementById("imageAnalyzeBtn");
+  const clearBtn =
+    document.getElementById("clearBtn");
 
-const loading =
+  const loading =
     document.getElementById("loading");
 
-const result =
+  const result =
     document.getElementById("result");
 
+  const errorBox =
+    document.getElementById("error");
 
-/* =========================================
-   اختيار الصورة
-========================================= */
 
-imageInput.addEventListener(
+  /* =========================
+     اختيار الصورة
+  ========================= */
+
+  imageInput.addEventListener(
     "change",
-    function(){
+    () => {
 
-        const file =
-            this.files[0];
+      const file =
+        imageInput.files[0];
 
-        if(!file) return;
-
-        selectedImage = file;
-
-        const reader =
-            new FileReader();
-
-        reader.onload = function(e){
-
-            previewImage.src =
-                e.target.result;
-
-            preview.style.display =
-                "block";
-
-            imageAnalyzeBtn.disabled =
-                false;
-
-        };
-
-        reader.readAsDataURL(file);
-
-    }
-);
-
-
-/* =========================================
-   فتح الكاميرا
-========================================= */
-
-function openCamera(){
-
-    document
-        .getElementById("imageInput")
-        .click();
-
-}
-
-
-/* =========================================
-   تحليل الصورة
-========================================= */
-
-async function analyzeImage(){
-
-    if(!selectedImage){
-
-        showToast("اختار صورة أولًا 📸");
-
+      if (!file) {
         return;
+      }
+
+      const reader =
+        new FileReader();
+
+      reader.onload = (event) => {
+
+        preview.src =
+          event.target.result;
+
+        preview.style.display =
+          "block";
+
+        analyzeBtn.disabled =
+          false;
+
+        result.style.display =
+          "none";
+
+        errorBox.style.display =
+          "none";
+
+      };
+
+      reader.readAsDataURL(file);
 
     }
+  );
 
 
-    const formData =
-        new FormData();
+  /* =========================
+     تحليل الصورة
+  ========================= */
 
-    formData.append(
-        "image",
-        selectedImage
-    );
+  analyzeBtn.addEventListener(
+    "click",
+    async () => {
+
+      const file =
+        imageInput.files[0];
+
+      if (!file) {
+        return;
+      }
+
+      loading.style.display =
+        "block";
+
+      analyzeBtn.disabled =
+        true;
+
+      errorBox.style.display =
+        "none";
+
+      result.style.display =
+        "none";
 
 
-    startLoading();
+      try {
+
+        const formData =
+          new FormData();
+
+        formData.append(
+          "image",
+          file
+        );
 
 
-    try{
+        /*
+          بما أن index.html سيعمل
+          من نفس Railway:
+        */
 
         const response =
-            await fetch(
-                API_URL +
-                "/api/analyze-image",
-                {
-                    method:"POST",
-                    body:formData
-                }
-            );
+          await fetch(
+            "/api/analyze-image",
+            {
+              method: "POST",
+              body: formData
+            }
+          );
 
 
         const data =
-            await response.json();
+          await response.json();
 
 
-        if(!response.ok){
+        if (!response.ok) {
 
-            throw new Error(
-                data.error ||
-                "حدث خطأ في السيرفر"
-            );
+          throw new Error(
+            data.error ||
+            "حدث خطأ أثناء التحليل"
+          );
 
         }
 
 
         showResult(data);
 
+      }
 
-    }catch(error){
+      catch (error) {
 
-        console.error(error);
+        errorBox.textContent =
+          error.message ||
+          "تعذر الاتصال بالسيرفر";
 
-        showToast(
-            "تعذر تحليل الصورة: " +
-            error.message
-        );
+        errorBox.style.display =
+          "block";
 
-    }finally{
+      }
 
-        stopLoading();
+      finally {
 
-    }
+        loading.style.display =
+          "none";
 
-}
+        analyzeBtn.disabled =
+          false;
 
-
-/* =========================================
-   تحليل النص
-========================================= */
-
-async function analyzeText(){
-
-    const text =
-        document
-        .getElementById("recipeText")
-        .value
-        .trim();
-
-
-    if(!text){
-
-        showToast("اكتب المكونات أو الوصفة أولًا ✍️");
-
-        return;
+      }
 
     }
+  );
 
 
-    startLoading();
+  /* =========================
+     عرض النتيجة
+  ========================= */
+
+  function showResult(data) {
+
+    document.getElementById(
+      "mealTitle"
+    ).textContent =
+      data.title ||
+      "وجبة غير معروفة";
 
 
-    try{
+    document.getElementById(
+      "calories"
+    ).textContent =
+      data.calories ||
+      0;
 
-        const response =
-            await fetch(
-                API_URL +
-                "/api/analyze-text",
-                {
-                    method:"POST",
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-                    body:JSON.stringify({
-                        text:text
-                    })
-                }
+
+    document.getElementById(
+      "protein"
+    ).textContent =
+      data.macros?.protein ||
+      0;
+
+
+    document.getElementById(
+      "carbs"
+    ).textContent =
+      data.macros?.carbs ||
+      0;
+
+
+    document.getElementById(
+      "fat"
+    ).textContent =
+      data.macros?.fat ||
+      0;
+
+
+    const ingredients =
+      document.getElementById(
+        "ingredients"
+      );
+
+    ingredients.innerHTML = "";
+
+
+    if (
+      Array.isArray(
+        data.ingredients
+      )
+    ) {
+
+      data.ingredients.forEach(
+        item => {
+
+          const div =
+            document.createElement(
+              "div"
             );
 
+          div.className =
+            "ingredient";
 
-        const data =
-            await response.json();
+          div.innerHTML = `
+            <b>${escapeHTML(
+              item.name || "مكون"
+            )}</b>
+            <span>${escapeHTML(
+              item.amount || ""
+            )}</span>
+          `;
 
-
-        if(!response.ok){
-
-            throw new Error(
-                data.error ||
-                "حدث خطأ في السيرفر"
-            );
+          ingredients.appendChild(
+            div
+          );
 
         }
-
-
-        showResult(data);
-
-
-    }catch(error){
-
-        console.error(error);
-
-        showToast(
-            "تعذر تحليل الوصفة: " +
-            error.message
-        );
-
-    }finally{
-
-        stopLoading();
-
-    }
-
-}
-
-
-/* =========================================
-   رابط TikTok / Instagram
-========================================= */
-
-function analyzeURL(){
-
-    const url =
-        document
-        .getElementById("recipeUrl")
-        .value
-        .trim();
-
-
-    if(!url){
-
-        showToast("ألصق رابط الفيديو أولًا 🔗");
-
-        return;
+      );
 
     }
 
 
-    showToast(
-        "استخراج TikTok وInstagram يحتاج إضافة خدمة استخراج للرابط في الـBackend."
-    );
+    const steps =
+      document.getElementById(
+        "steps"
+      );
 
-}
-
-
-/* =========================================
-   عرض النتيجة
-========================================= */
-
-function showResult(data){
-
-    currentResult = data;
+    steps.innerHTML = "";
 
 
-    document
-        .getElementById("resultTitle")
-        .textContent =
-            data.title ||
-            "وجبة غير معروفة";
+    if (
+      Array.isArray(
+        data.steps
+      )
+    ) {
 
+      data.steps.forEach(
+        (step, index) => {
 
-    document
-        .getElementById("resultCalories")
-        .textContent =
-            number(data.calories);
+          const div =
+            document.createElement(
+              "div"
+            );
 
+          div.className =
+            "step";
 
-    document
-        .getElementById("resultProtein")
-        .textContent =
-            number(
-                data.macros?.protein
-            ) + "g";
+          div.textContent =
+            `${index + 1}. ${step}`;
 
+          steps.appendChild(
+            div
+          );
 
-    document
-        .getElementById("resultCarbs")
-        .textContent =
-            number(
-                data.macros?.carbs
-            ) + "g";
+        }
+      );
 
-
-    document
-        .getElementById("resultFat")
-        .textContent =
-            number(
-                data.macros?.fat
-            ) + "g";
-
-
-    renderIngredients(
-        data.ingredients || []
-    );
-
-
-    renderSteps(
-        data.steps || []
-    );
+    }
 
 
     result.style.display =
-        "block";
-
+      "block";
 
     result.scrollIntoView({
-        behavior:"smooth",
-        block:"start"
+      behavior: "smooth",
+      block: "start"
     });
 
-}
-
-
-/* =========================================
-   المكونات
-========================================= */
-
-function renderIngredients(items){
-
-    const box =
-        document.getElementById(
-            "ingredients"
-        );
-
-
-    if(!items.length){
-
-        box.innerHTML =
-            `<div style="color:#777;font-size:12px">
-                لم يتم تحديد المكونات.
-            </div>`;
-
-        return;
-
-    }
-
-
-    box.innerHTML =
-        items.map(
-            item => `
-
-            <div class="ingredient">
-
-                <span>
-                    ${escapeHTML(
-                        item.name ||
-                        "مكون"
-                    )}
-                </span>
-
-                <span class="amount">
-                    ${escapeHTML(
-                        item.amount ||
-                        "كمية تقريبية"
-                    )}
-                </span>
-
-            </div>
-
-        `
-        ).join("");
-
-}
-
-
-/* =========================================
-   الخطوات
-========================================= */
-
-function renderSteps(items){
-
-    const box =
-        document.getElementById(
-            "steps"
-        );
-
-
-    if(!items.length){
-
-        box.innerHTML =
-            `<div style="color:#777;font-size:12px">
-                لا توجد خطوات محددة.
-            </div>`;
-
-        return;
-
-    }
-
-
-    box.innerHTML =
-        items.map(
-            (step,index) => `
-
-            <div class="step">
-
-                <div class="stepNum">
-                    ${index + 1}
-                </div>
-
-                <div>
-                    ${escapeHTML(step)}
-                </div>
-
-            </div>
-
-        `
-        ).join("");
-
-}
-
-
-/* =========================================
-   حفظ الوجبة
-========================================= */
-
-function saveCurrentMeal(){
-
-    if(!currentResult){
-
-        showToast("لا توجد نتيجة لحفظها");
-
-        return;
-
-    }
-
-
-    const meals =
-        JSON.parse(
-            localStorage.getItem(
-                "luqmaMeals"
-            ) || "[]"
-        );
-
-
-    meals.unshift({
-
-        id:Date.now(),
-
-        title:
-            currentResult.title ||
-            "وجبة",
-
-        calories:
-            Number(
-                currentResult.calories
-            ) || 0,
-
-        protein:
-            Number(
-                currentResult.macros?.protein
-            ) || 0,
-
-        carbs:
-            Number(
-                currentResult.macros?.carbs
-            ) || 0,
-
-        fat:
-            Number(
-                currentResult.macros?.fat
-            ) || 0,
-
-        date:
-            new Date().toLocaleString(
-                "ar-IQ"
-            )
-
-    });
-
-
-    localStorage.setItem(
-        "luqmaMeals",
-        JSON.stringify(
-            meals.slice(0,100)
-        )
-    );
-
-
-    updateDashboard();
-
-    showToast(
-        "تم حفظ الوجبة بنجاح ✅"
-    );
-
-}
-
-
-/* =========================================
-   لوحة اليوم
-========================================= */
-
-function updateDashboard(){
-
-    const meals =
-        JSON.parse(
-            localStorage.getItem(
-                "luqmaMeals"
-            ) || "[]"
-        );
-
-
-    const today =
-        new Date().toDateString();
-
-
-    const todayMeals =
-        meals.filter(
-            meal => {
-
-                const d =
-                    new Date(
-                        meal.id
-                    ).toDateString();
-
-                return d === today;
-
-            }
-        );
-
-
-    const calories =
-        todayMeals.reduce(
-            (sum,meal) =>
-                sum +
-                Number(
-                    meal.calories
-                ),
-            0
-        );
-
-
-    const protein =
-        todayMeals.reduce(
-            (sum,meal) =>
-                sum +
-                Number(
-                    meal.protein
-                ),
-            0
-        );
-
-
-    document
-        .getElementById(
-            "todayCalories"
-        )
-        .textContent =
-            Math.round(calories);
-
-
-    document
-        .getElementById(
-            "todayProtein"
-        )
-        .textContent =
-            Math.round(protein) +
-            "g";
-
-
-    document
-        .getElementById(
-            "mealCount"
-        )
-        .textContent =
-            todayMeals.length;
-
-
-    renderHistory(meals);
-
-}
-
-
-/* =========================================
-   السجل
-========================================= */
-
-function renderHistory(meals){
-
-    const box =
-        document.getElementById(
-            "history"
-        );
-
-
-    if(!meals.length){
-
-        box.innerHTML =
-            `<div style="text-align:center;color:#777383;font-size:12px">
-                لا توجد وجبات محفوظة
-            </div>`;
-
-        return;
-
-    }
-
-
-    box.innerHTML =
-        meals.slice(0,20)
-        .map(
-            meal => `
-
-            <div class="historyItem">
-
-                <div>
-
-                    <div class="historyName">
-                        ${escapeHTML(
-                            meal.title
-                        )}
-                    </div>
-
-                    <div class="historyDate">
-                        ${escapeHTML(
-                            meal.date
-                        )}
-                    </div>
-
-                </div>
-
-                <div class="historyCalories">
-                    ${Math.round(
-                        meal.calories
-                    )} kcal
-                </div>
-
-            </div>
-
-        `
-        ).join("");
-
-}
-
-
-/* =========================================
-   حذف السجل
-========================================= */
-
-function clearHistory(){
-
-    if(
-        !confirm(
-            "متأكد تريد مسح كل الوجبات؟"
-        )
-    ) return;
-
-
-    localStorage.removeItem(
-        "luqmaMeals"
-    );
-
-
-    updateDashboard();
-
-    showToast(
-        "تم مسح السجل"
-    );
-
-}
-
-
-/* =========================================
-   Loading
-========================================= */
-
-function startLoading(){
-
-    loading.style.display =
-        "block";
-
-    result.style.display =
+  }
+
+
+  /* =========================
+     تنظيف النص
+  ========================= */
+
+  function escapeHTML(text) {
+
+    return String(text)
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+
+  }
+
+
+  /* =========================
+     زر المسح
+  ========================= */
+
+  clearBtn.addEventListener(
+    "click",
+    () => {
+
+      imageInput.value =
+        "";
+
+      preview.src =
+        "";
+
+      preview.style.display =
         "none";
 
-    window.scrollTo({
-        top:
-            loading.offsetTop -
-            100,
-        behavior:"smooth"
-    });
+      analyzeBtn.disabled =
+        true;
 
-}
-
-
-function stopLoading(){
-
-    loading.style.display =
+      result.style.display =
         "none";
 
-}
+      errorBox.style.display =
+        "none";
 
-
-/* =========================================
-   Toast
-========================================= */
-
-let toastTimer;
-
-
-function showToast(message){
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    toast.textContent =
-        message;
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            3500
-        );
-
-}
-
-
-/* =========================================
-   Scroll
-========================================= */
-
-function scrollToText(){
-
-    document
-        .getElementById(
-            "textSection"
-        )
-        .scrollIntoView({
-            behavior:"smooth"
-        });
-
-}
-
-
-function scrollToHistory(){
-
-    document
-        .getElementById(
-            "historySection"
-        )
-        .scrollIntoView({
-            behavior:"smooth"
-        });
-
-}
-
-
-/* =========================================
-   Helpers
-========================================= */
-
-function number(value){
-
-    const n =
-        Number(value);
-
-    if(
-        Number.isNaN(n)
-    ) return 0;
-
-    return Math.round(n);
-
-}
-
-
-function escapeHTML(value){
-
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-const app = express();
-
-app.use(express.static("."));
-
-}
-
-
-/* =========================================
-   تشغيل
-========================================= */
-
-updateDashboard();
+    }
+  );
 
 </script>
 
