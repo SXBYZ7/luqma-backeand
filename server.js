@@ -8,38 +8,35 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-/* =========================
+/* =========================================================
    Middleware
-========================= */
+========================================================= */
 
 app.use(cors());
 
 app.use(
   express.json({
-    limit: "10mb"
+    limit: "15mb"
   })
 );
 
 app.use(
   express.urlencoded({
     extended: true,
-    limit: "10mb"
+    limit: "15mb"
   })
 );
 
-/* =========================
-   عرض واجهة لُقمة
-========================= */
+/* =========================================================
+   Static Files
+   index.html + server.js + أي ملفات أخرى
+========================================================= */
 
-app.use(
-  express.static(
-    path.join(__dirname)
-  )
-);
+app.use(express.static(__dirname));
 
-/* =========================
+/* =========================================================
    Upload
-========================= */
+========================================================= */
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -49,82 +46,72 @@ const upload = multer({
   }
 });
 
-/* =========================
+/* =========================================================
    OpenAI
-========================= */
+========================================================= */
 
-let client = null;
+let openai = null;
 
 if (process.env.OPENAI_API_KEY) {
-  client = new OpenAI({
+  openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
   });
 }
 
-/* =========================
-   الصفحة الرئيسية
-========================= */
+/* =========================================================
+   HOME
+========================================================= */
 
 app.get("/", (req, res) => {
-
   res.sendFile(
-    path.join(
-      __dirname,
-      "index.html"
-    )
+    path.join(__dirname, "index.html")
   );
-
 });
 
-/* =========================
-   Health
-========================= */
+/* =========================================================
+   HEALTH
+========================================================= */
 
 app.get("/health", (req, res) => {
-
   res.json({
     success: true,
     app: "لُقمة",
-    version: "4.0",
+    version: "V4",
     status: "online",
     port: PORT,
-    openai: !!process.env.OPENAI_API_KEY
+    openai:
+      !!process.env.OPENAI_API_KEY
   });
-
 });
 
-/* =========================
-   API Test
-========================= */
+/* =========================================================
+   API TEST
+========================================================= */
 
 app.get("/api/test", (req, res) => {
-
   res.json({
     success: true,
     app: "لُقمة",
+    version: "V4",
     message: "Luqma API يعمل بشكل صحيح 🚀"
   });
-
 });
 
-/* =========================
-   OpenAI Check
-========================= */
+/* =========================================================
+   OPENAI CHECK
+========================================================= */
 
-function checkOpenAI(res) {
+function requireOpenAI(res) {
 
   if (
     !process.env.OPENAI_API_KEY ||
-    !client
+    !openai
   ) {
 
     res.status(500).json({
-
       success: false,
-
       error:
         "OPENAI_API_KEY غير موجود في Railway"
-
     });
 
     return false;
@@ -133,83 +120,66 @@ function checkOpenAI(res) {
   return true;
 }
 
-/* =========================
-   AI
-========================= */
+/* =========================================================
+   AI FUNCTION
+========================================================= */
 
 async function askAI(
   prompt,
   imageData = null
 ) {
 
-  if (!client) {
-
+  if (!openai) {
     throw new Error(
       "OPENAI_API_KEY غير موجود"
     );
-
   }
 
   const content = [
-
     {
       type: "input_text",
       text: prompt
     }
-
   ];
 
   if (imageData) {
 
     content.push({
-
       type: "input_image",
       image_url: imageData
-
     });
 
   }
 
   const response =
-    await client.responses.create({
+    await openai.responses.create({
 
       model:
         process.env.OPENAI_MODEL ||
         "gpt-5.6",
 
       input: [
-
         {
           role: "user",
-
-          content: content
-
+          content
         }
-
       ]
 
     });
 
   return response.output_text || "";
-
 }
 
-/* =========================
-   JSON Parser
-========================= */
+/* =========================================================
+   JSON PARSER
+========================================================= */
 
 function parseJSON(text) {
 
   let clean =
     String(text || "")
-      .replace(
-        /```json/gi,
-        ""
-      )
-      .replace(
-        /```/g,
-        ""
-      )
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
       .trim();
 
   const first =
@@ -229,34 +199,27 @@ function parseJSON(text) {
         first,
         last + 1
       );
-
   }
 
   try {
 
-    return JSON.parse(
-      clean
-    );
+    return JSON.parse(clean);
 
-  } catch (error) {
+  } catch {
 
     throw new Error(
-      "الذكاء الاصطناعي لم يرجع JSON صالح"
+      "الذكاء الاصطناعي لم يرجع بيانات JSON صحيحة"
     );
-
   }
-
 }
 
-/* =========================
-   تحليل صورة
-========================= */
+/* =========================================================
+   تحليل صورة الوجبة
+========================================================= */
 
 app.post(
   "/api/analyze-image",
-
   upload.single("image"),
-
   async (req, res) => {
 
     try {
@@ -264,17 +227,14 @@ app.post(
       if (!req.file) {
 
         return res.status(400).json({
-
           success: false,
-
           error:
             "لم يتم إرسال صورة"
-
         });
 
       }
 
-      if (!checkOpenAI(res)) {
+      if (!requireOpenAI(res)) {
         return;
       }
 
@@ -294,31 +254,32 @@ app.post(
 
 أنت "لُقمة"، مساعد ذكي متخصص بالطعام والتغذية.
 
-حلل صورة الوجبة المرفقة.
+حلل صورة الوجبة.
 
-حدد بشكل تقريبي:
+حاول تحديد:
 
-- اسم الوجبة
-- الأطعمة الموجودة
-- كمية كل طعام
-- السعرات
-- البروتين
-- الكربوهيدرات
-- الدهون
-- المكونات
-- خطوات التحضير إذا أمكن استنتاجها
+1. اسم الوجبة
+2. جميع الأطعمة الظاهرة
+3. الكمية التقريبية لكل عنصر
+4. السعرات الحرارية
+5. البروتين
+6. الكربوهيدرات
+7. الدهون
+8. الألياف إن أمكن
+9. المكونات
+10. خطوات التحضير إذا أمكن استنتاجها
 
-مهم:
+مهم جدًا:
 
-لا تدّعي أن الأرقام دقيقة 100%.
+الصورة لا تعطي الوزن الحقيقي بشكل مؤكد.
 
-الصورة لا تكفي لمعرفة الوزن الحقيقي.
+لذلك استخدم تقديرات منطقية.
 
-استخدم تقديرات منطقية.
+لا تقل إن الأرقام دقيقة 100%.
 
-أرجع JSON فقط.
+أرجع JSON فقط بدون أي كلام خارجه.
 
-الشكل:
+استخدم:
 
 {
   "title": "اسم الوجبة",
@@ -326,7 +287,8 @@ app.post(
   "macros": {
     "protein": 30,
     "carbs": 50,
-    "fat": 15
+    "fat": 15,
+    "fiber": 5
   },
   "ingredients": [
     {
@@ -352,16 +314,11 @@ app.post(
         parseJSON(result);
 
       res.json({
-
         success: true,
-
         ...data
-
       });
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
       console.error(
         "IMAGE ERROR:",
@@ -369,27 +326,21 @@ app.post(
       );
 
       res.status(500).json({
-
         success: false,
-
         error:
           error?.message ||
           "حدث خطأ أثناء تحليل الصورة"
-
       });
-
     }
-
   }
 );
 
-/* =========================
-   تحليل النص
-========================= */
+/* =========================================================
+   تحليل نص
+========================================================= */
 
 app.post(
   "/api/analyze-text",
-
   async (req, res) => {
 
     try {
@@ -400,17 +351,14 @@ app.post(
       if (!text) {
 
         return res.status(400).json({
-
           success: false,
-
           error:
             "لم يتم إرسال النص"
-
         });
 
       }
 
-      if (!checkOpenAI(res)) {
+      if (!requireOpenAI(res)) {
         return;
       }
 
@@ -422,9 +370,17 @@ app.post(
 
 ${text}
 
-استخرج الوصفة والمكونات والكميات والخطوات.
+استخرج:
 
-احسب السعرات والقيم الغذائية بشكل تقريبي.
+- اسم الوصفة
+- المكونات
+- الكميات
+- طريقة التحضير
+- السعرات
+- البروتين
+- الكارب
+- الدهون
+- الألياف إن أمكن
 
 أرجع JSON فقط:
 
@@ -434,7 +390,8 @@ ${text}
   "macros": {
     "protein": 30,
     "carbs": 50,
-    "fat": 15
+    "fat": 15,
+    "fiber": 5
   },
   "ingredients": [
     {
@@ -457,16 +414,11 @@ ${text}
         parseJSON(result);
 
       res.json({
-
         success: true,
-
         ...data
-
       });
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
       console.error(
         "TEXT ERROR:",
@@ -474,27 +426,178 @@ ${text}
       );
 
       res.status(500).json({
-
         success: false,
-
         error:
           error?.message ||
           "حدث خطأ أثناء تحليل النص"
-
       });
-
     }
-
   }
 );
 
-/* =========================
-   إنشاء وصفة
-========================= */
+/* =========================================================
+   استخراج وصفة من رابط TikTok / Instagram
+========================================================= */
+
+app.post(
+  "/api/extract-recipe",
+  async (req, res) => {
+
+    try {
+
+      const url =
+        String(
+          req.body?.url || ""
+        ).trim();
+
+      if (!url) {
+
+        return res.status(400).json({
+          success: false,
+          error:
+            "لم يتم إرسال رابط"
+        });
+
+      }
+
+      const isTikTok =
+        /tiktok\.com/i.test(url);
+
+      const isInstagram =
+        /instagram\.com/i.test(url);
+
+      if (
+        !isTikTok &&
+        !isInstagram
+      ) {
+
+        return res.status(400).json({
+          success: false,
+          error:
+            "الرابط يجب أن يكون من TikTok أو Instagram"
+        });
+
+      }
+
+      if (!requireOpenAI(res)) {
+        return;
+      }
+
+      /*
+       * ملاحظة:
+       * OpenAI هنا لا يستطيع تلقائيًا مشاهدة
+       * فيديو TikTok/Instagram بمجرد إعطائه الرابط.
+       *
+       * لذلك نستخدم الرابط كمعلومة مصدر،
+       * ونطلب من النموذج عدم اختراع تفاصيل
+       * غير موجودة.
+       *
+       * يمكن لاحقًا إضافة خدمة استخراج فيديو/نص
+       * حقيقية لهذه الميزة.
+       */
+
+      const prompt = `
+
+أنت مساعد التغذية في تطبيق "لُقمة".
+
+المستخدم أعطاك رابط وصفة من:
+${isTikTok ? "TikTok" : "Instagram"}
+
+الرابط:
+${url}
+
+مهم جدًا:
+
+لا تدّعي أنك شاهدت الفيديو إذا لم يكن
+محتوى الفيديو أو نصه متاحًا لك.
+
+إذا لم تتوفر معلومات الوصفة من الرابط،
+أرجع JSON يحتوي على:
+
+{
+  "title": "تعذر استخراج الوصفة",
+  "calories": 0,
+  "macros": {
+    "protein": 0,
+    "carbs": 0,
+    "fat": 0,
+    "fiber": 0
+  },
+  "ingredients": [],
+  "steps": [],
+  "source": "${url}",
+  "needsContent": true,
+  "message": "نحتاج نص الوصفة أو محتوى الفيديو لتحليلها بدقة."
+}
+
+ولا تخترع مكونات أو سعرات.
+
+إذا كان محتوى الوصفة متوفرًا ضمن المدخل،
+حلله وأرجع:
+
+{
+  "title": "اسم الوصفة",
+  "calories": 500,
+  "macros": {
+    "protein": 30,
+    "carbs": 50,
+    "fat": 15,
+    "fiber": 5
+  },
+  "ingredients": [
+    {
+      "name": "اسم المكون",
+      "amount": "الكمية"
+    }
+  ],
+  "steps": [
+    "الخطوة الأولى",
+    "الخطوة الثانية"
+  ],
+  "source": "${url}",
+  "needsContent": false
+}
+
+أرجع JSON فقط.
+
+`;
+
+      const result =
+        await askAI(prompt);
+
+      const data =
+        parseJSON(result);
+
+      res.json({
+        success: true,
+        ...data,
+        source:
+          data.source || url
+      });
+
+    } catch (error) {
+
+      console.error(
+        "EXTRACT ERROR:",
+        error
+      );
+
+      res.status(500).json({
+        success: false,
+        error:
+          error?.message ||
+          "حدث خطأ أثناء استخراج الوصفة"
+      });
+    }
+  }
+);
+
+/* =========================================================
+   إنشاء وصفة من مكونات
+========================================================= */
 
 app.post(
   "/api/recipe",
-
   async (req, res) => {
 
     try {
@@ -505,17 +608,14 @@ app.post(
       if (!ingredients) {
 
         return res.status(400).json({
-
           success: false,
-
           error:
             "لم يتم إرسال المكونات"
-
         });
 
       }
 
-      if (!checkOpenAI(res)) {
+      if (!requireOpenAI(res)) {
         return;
       }
 
@@ -529,7 +629,13 @@ ${ingredients}
 
 أنشئ وصفة مناسبة.
 
-احسب السعرات والقيم الغذائية بشكل تقريبي.
+احسب بشكل تقريبي:
+
+- السعرات
+- البروتين
+- الكارب
+- الدهون
+- الألياف
 
 أرجع JSON فقط:
 
@@ -539,7 +645,8 @@ ${ingredients}
   "macros": {
     "protein": 30,
     "carbs": 50,
-    "fat": 15
+    "fat": 15,
+    "fiber": 5
   },
   "ingredients": [
     {
@@ -562,16 +669,11 @@ ${ingredients}
         parseJSON(result);
 
       res.json({
-
         success: true,
-
         ...data
-
       });
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
       console.error(
         "RECIPE ERROR:",
@@ -579,42 +681,35 @@ ${ingredients}
       );
 
       res.status(500).json({
-
         success: false,
-
         error:
           error?.message ||
           "حدث خطأ أثناء إنشاء الوصفة"
-
       });
-
     }
-
   }
 );
 
-/* =========================
-   404
-========================= */
+/* =========================================================
+   404 API
+========================================================= */
 
 app.use(
+  "/api",
   (req, res) => {
 
     res.status(404).json({
-
       success: false,
-
       error:
-        "الصفحة أو المسار غير موجود"
-
+        "API endpoint غير موجود"
     });
 
   }
 );
 
-/* =========================
+/* =========================================================
    تشغيل السيرفر
-========================= */
+========================================================= */
 
 app.listen(
   PORT,
@@ -622,7 +717,7 @@ app.listen(
   () => {
 
     console.log(
-      `Luqma V4 running on port ${PORT}`
+      `Luqma Backend V4 running on port ${PORT}`
     );
 
   }
