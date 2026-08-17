@@ -4,27 +4,14 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-app.use(express.json());
-
 app.get("/", (req, res) => {
-  res.status(200).send("LUQMA V4 WORKING ✅");
+  res.send("LUQMA ROOT WORKING");
 });
 
-app.get("/health", (req, res) => {
-  res.status(200).json({
-    success: true,
-    status: "online",
-    version: "V4"
-  });
-});
-
-app.get("/api/test", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "API WORKING ✅"
-  });
+app.get("/abc123", (req, res) => {
+  res.send("LUQMA ROUTE WORKING");
 });
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log("LUQMA SERVER RUNNING ON PORT " + PORT);
+  console.log("LUQMA RUNNING ON PORT " + PORT);
 });
