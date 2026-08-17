@@ -1,1042 +1,1876 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>لُقمة - مساعدك الغذائي</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Tahoma, Arial, sans-serif;
-    }
-
-    body {
-      background:
-        radial-gradient(circle at top right, rgba(190, 160, 55, 0.10), transparent 35%),
-        #080808;
-      color: #f5f2e8;
-      min-height: 100vh;
-    }
-
-    button,
-    input,
-    textarea {
-      font-family: inherit;
-    }
-
-    /* =========================
-       Header
-    ========================= */
-
-    header {
-      height: 75px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 22px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      background: rgba(8,8,8,0.78);
-      backdrop-filter: blur(18px);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-    }
-
-    .logo {
-      width: 43px;
-      height: 43px;
-      border-radius: 14px;
-      background: #b7a45a;
-      color: #111;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 23px;
-      font-weight: bold;
-      box-shadow: 0 8px 25px rgba(183,164,90,0.18);
-    }
-
-    .brand-text h1 {
-      font-size: 21px;
-      letter-spacing: -0.5px;
-    }
-
-    .brand-text span {
-      color: #aaa590;
-      font-size: 11px;
-    }
-
-    .status {
-      border: 1px solid rgba(183,164,90,0.25);
-      color: #c7b76d;
-      background: rgba(183,164,90,0.08);
-      padding: 8px 12px;
-      border-radius: 30px;
-      font-size: 11px;
-    }
-
-    /* =========================
-       Main
-    ========================= */
-
-    main {
-      width: min(950px, 92%);
-      margin: auto;
-      padding: 42px 0 70px;
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-
-    .hero h2 {
-      font-size: clamp(31px, 7vw, 55px);
-      margin-bottom: 12px;
-      letter-spacing: -2px;
-    }
-
-    .hero h2 span {
-      color: #b7a45a;
-    }
-
-    .hero p {
-      color: #96948b;
-      font-size: 14px;
-      line-height: 1.8;
-      max-width: 570px;
-      margin: auto;
-    }
-
-    /* =========================
-       Glass Card
-    ========================= */
-
-    .glass {
-      background: rgba(255,255,255,0.035);
-      border: 1px solid rgba(255,255,255,0.075);
-      box-shadow:
-        0 20px 60px rgba(0,0,0,0.35),
-        inset 0 1px rgba(255,255,255,0.035);
-      backdrop-filter: blur(18px);
-      border-radius: 25px;
-    }
-
-    /* =========================
-       Upload
-    ========================= */
-
-    .upload-card {
-      padding: 25px;
-      margin-bottom: 22px;
-    }
-
-    .upload-area {
-      min-height: 260px;
-      border: 1px dashed rgba(183,164,90,0.38);
-      border-radius: 21px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 25px;
-      cursor: pointer;
-      transition: .25s;
-      background: rgba(183,164,90,0.025);
-    }
-
-    .upload-area:hover {
-      background: rgba(183,164,90,0.07);
-      border-color: rgba(183,164,90,0.65);
-      transform: translateY(-2px);
-    }
-
-    .upload-icon {
-      width: 68px;
-      height: 68px;
-      border-radius: 22px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(183,164,90,0.11);
-      color: #c6b66c;
-      font-size: 29px;
-      margin-bottom: 17px;
-    }
-
-    .upload-area h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-
-    .upload-area p {
-      color: #85837c;
-      font-size: 12px;
-      text-align: center;
-    }
-
-    #imageInput {
-      display: none;
-    }
-
-    .preview {
-      width: 100%;
-      max-height: 360px;
-      object-fit: contain;
-      border-radius: 18px;
-      margin-top: 18px;
-      display: none;
-    }
-
-    /* =========================
-       Buttons
-    ========================= */
-
-    .actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .btn {
-      flex: 1;
-      min-height: 52px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.08);
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      transition: .2s;
-    }
-
-    .btn-primary {
-      background: #b7a45a;
-      color: #101010;
-      box-shadow: 0 10px 25px rgba(183,164,90,0.13);
-    }
-
-    .btn-primary:hover {
-      background: #c4b36b;
-      transform: translateY(-2px);
-    }
-
-    .btn-secondary {
-      background: rgba(255,255,255,0.045);
-      color: #ddd9cd;
-      backdrop-filter: blur(12px);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.08);
-    }
-
-    .btn:disabled {
-      opacity: .4;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* =========================
-       Loading
-    ========================= */
-
-    .loading {
-      display: none;
-      text-align: center;
-      padding: 25px;
-      color: #b7a45a;
-    }
-
-    .spinner {
-      width: 35px;
-      height: 35px;
-      border: 3px solid rgba(183,164,90,.15);
-      border-top-color: #b7a45a;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: auto auto 12px;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    /* =========================
-       Result
-    ========================= */
-
-    #result {
-      display: none;
-    }
-
-    .result-card {
-      padding: 25px;
-    }
-
-    .result-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 22px;
-    }
-
-    .result-title h2 {
-      font-size: 23px;
-    }
-
-    .result-title span {
-      color: #9e9b91;
-      font-size: 11px;
-    }
-
-    .calories {
-      background: rgba(183,164,90,0.08);
-      border: 1px solid rgba(183,164,90,0.17);
-      border-radius: 19px;
-      padding: 20px;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    .calories strong {
-      display: block;
-      color: #c5b46b;
-      font-size: 38px;
-      margin-bottom: 3px;
-    }
-
-    .calories span {
-      color: #96938a;
-      font-size: 12px;
-    }
-
-    .macros {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .macro {
-      background: rgba(255,255,255,0.035);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 17px;
-      padding: 17px 10px;
-      text-align: center;
-    }
-
-    .macro strong {
-      display: block;
-      font-size: 20px;
-      margin-bottom: 5px;
-    }
-
-    .macro span {
-      color: #88867f;
-      font-size: 11px;
-    }
-
-    .section {
-      margin-top: 20px;
-    }
-
-    .section h3 {
-      font-size: 15px;
-      margin-bottom: 12px;
-      color: #d8d3c4;
-    }
-
-    .ingredients {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .ingredient {
-      background: rgba(255,255,255,0.03);
-      padding: 12px 14px;
-      border-radius: 13px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-    }
-
-    .ingredient span {
-      color: #8d8a82;
-    }
-
-    .steps {
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
-
-    .step {
-      background: rgba(255,255,255,0.03);
-      padding: 13px;
-      border-radius: 13px;
-      color: #b8b5ab;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    /* =========================
-       Error
-    ========================= */
-
-    .error {
-      display: none;
-      background: rgba(160,50,50,.10);
-      border: 1px solid rgba(180,70,70,.2);
-      color: #d99a9a;
-      border-radius: 15px;
-      padding: 15px;
-      margin-top: 15px;
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    /* =========================
-       Footer
-    ========================= */
-
-    footer {
-      text-align: center;
-      color: #5e5c56;
-      font-size: 11px;
-      padding: 20px;
-    }
-
-    /* =========================
-       Mobile
-    ========================= */
-
-    @media (max-width: 600px) {
-
-      header {
-        padding: 0 15px;
-      }
-
-      .status {
-        display: none;
-      }
-
-      main {
-        width: 94%;
-        padding-top: 30px;
-      }
-
-      .upload-card,
-      .result-card {
-        padding: 17px;
-      }
-
-      .upload-area {
-        min-height: 230px;
-      }
-
-      .actions {
-        flex-direction: column;
-      }
-
-      .macros {
-        gap: 7px;
-      }
-
-      .macro {
-        padding: 14px 5px;
-      }
-
-      .hero h2 {
-        font-size: 34px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>لُقمة V4</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Tahoma,Arial,sans-serif;
+}
+
+:root{
+  --bg:#080808;
+  --card:#111110;
+  --card2:#171714;
+  --gold:#b8a45d;
+  --gold2:#d0be79;
+  --text:#f1eee5;
+  --muted:#858278;
+  --border:rgba(255,255,255,.07);
+  --danger:#b96c6c;
+}
+
+body{
+  background:
+    radial-gradient(circle at 90% 0%,rgba(184,164,93,.12),transparent 28%),
+    radial-gradient(circle at 0% 100%,rgba(184,164,93,.06),transparent 25%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+button,input,select{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* ONBOARDING */
+
+#onboarding{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:25px;
+}
+
+.onboard{
+  width:min(470px,100%);
+  background:rgba(20,20,18,.88);
+  border:1px solid var(--border);
+  border-radius:30px;
+  padding:30px;
+  box-shadow:0 30px 90px #000;
+  backdrop-filter:blur(20px);
+}
+
+.brand-big{
+  text-align:center;
+  margin-bottom:28px;
+}
+
+.logo{
+  width:65px;
+  height:65px;
+  margin:auto;
+  border-radius:21px;
+  background:var(--gold);
+  color:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  font-weight:bold;
+  box-shadow:0 15px 35px rgba(184,164,93,.16);
+}
+
+.brand-big h1{
+  margin-top:14px;
+  font-size:30px;
+}
+
+.brand-big p{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:7px;
+}
+
+.progress{
+  height:4px;
+  background:#25251f;
+  border-radius:10px;
+  margin-bottom:25px;
+  overflow:hidden;
+}
+
+.progress i{
+  display:block;
+  width:25%;
+  height:100%;
+  background:var(--gold);
+  transition:.3s;
+}
+
+.step{
+  display:none;
+}
+
+.step.active{
+  display:block;
+}
+
+.step h2{
+  font-size:22px;
+  margin-bottom:8px;
+}
+
+.step p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.8;
+  margin-bottom:20px;
+}
+
+.field{
+  margin-bottom:14px;
+}
+
+.field label{
+  display:block;
+  color:#aaa69a;
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+.field input,
+.field select{
+  width:100%;
+  height:52px;
+  background:#0b0b0a;
+  border:1px solid var(--border);
+  border-radius:15px;
+  color:var(--text);
+  padding:0 15px;
+  outline:none;
+}
+
+.field input:focus,
+.field select:focus{
+  border-color:rgba(184,164,93,.55);
+}
+
+.goals{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.goal{
+  padding:16px 10px;
+  border:1px solid var(--border);
+  background:#0c0c0b;
+  border-radius:16px;
+  color:#aaa69a;
+  text-align:center;
+  transition:.2s;
+}
+
+.goal.selected{
+  border-color:var(--gold);
+  background:rgba(184,164,93,.09);
+  color:var(--gold2);
+}
+
+.next{
+  width:100%;
+  height:53px;
+  border:0;
+  border-radius:16px;
+  background:var(--gold);
+  color:#10100f;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+/* APP */
+
+#app{
+  min-height:100vh;
+  padding-bottom:85px;
+}
+
+header{
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  border-bottom:1px solid var(--border);
+  background:rgba(8,8,8,.8);
+  backdrop-filter:blur(20px);
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.header-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.header-logo{
+  width:41px;
+  height:41px;
+  border-radius:13px;
+  background:var(--gold);
+  color:#111;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:bold;
+  font-size:20px;
+}
+
+.header-brand b{
+  font-size:19px;
+}
+
+.header-brand span{
+  display:block;
+  font-size:9px;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.avatar{
+  width:39px;
+  height:39px;
+  border-radius:50%;
+  background:#171713;
+  border:1px solid rgba(184,164,93,.3);
+  color:var(--gold2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+main{
+  width:min(900px,94%);
+  margin:auto;
+  padding:25px 0;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.welcome{
+  margin:10px 0 22px;
+}
+
+.welcome small{
+  color:var(--muted);
+}
+
+.welcome h1{
+  margin-top:5px;
+  font-size:27px;
+}
+
+.welcome h1 span{
+  color:var(--gold2);
+}
+
+/* CALORIE CARD */
+
+.calorie-card{
+  background:
+    linear-gradient(135deg,rgba(184,164,93,.13),rgba(255,255,255,.025)),
+    var(--card);
+  border:1px solid rgba(184,164,93,.15);
+  border-radius:25px;
+  padding:23px;
+  margin-bottom:15px;
+}
+
+.calorie-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.calorie-top small{
+  color:var(--muted);
+}
+
+.calorie-number{
+  font-size:39px;
+  font-weight:bold;
+  margin-top:7px;
+}
+
+.calorie-number span{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.ring{
+  width:82px;
+  height:82px;
+  border-radius:50%;
+  background:conic-gradient(var(--gold) 0deg,#282820 0deg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.ring div{
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:#10100f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  color:var(--gold2);
+}
+
+.progress-line{
+  height:7px;
+  background:#282820;
+  border-radius:10px;
+  margin-top:20px;
+  overflow:hidden;
+}
+
+.progress-line i{
+  display:block;
+  height:100%;
+  width:0;
+  background:var(--gold);
+  border-radius:10px;
+}
+
+/* MACROS */
+
+.macro-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.macro{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:17px 8px;
+  text-align:center;
+}
+
+.macro b{
+  display:block;
+  font-size:20px;
+  color:var(--gold2);
+}
+
+.macro span{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.macro small{
+  display:block;
+  margin-top:6px;
+  color:#aaa69a;
+  font-size:10px;
+}
+
+/* QUICK */
+
+.quick-title{
+  margin:23px 0 12px;
+  font-size:16px;
+}
+
+.quick-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:11px;
+}
+
+.quick{
+  min-height:105px;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:19px;
+  padding:17px;
+  text-align:right;
+  color:var(--text);
+}
+
+.quick .icon{
+  font-size:25px;
+  margin-bottom:9px;
+}
+
+.quick b{
+  display:block;
+  font-size:13px;
+}
+
+.quick span{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:5px;
+}
+
+/* UPLOAD */
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:23px;
+  padding:20px;
+  margin-bottom:15px;
+}
+
+.page-title{
+  margin-bottom:18px;
+}
+
+.page-title h2{
+  font-size:24px;
+}
+
+.page-title p{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:6px;
+  line-height:1.7;
+}
+
+.upload{
+  min-height:230px;
+  border:1px dashed rgba(184,164,93,.35);
+  background:rgba(184,164,93,.025);
+  border-radius:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+}
+
+.upload-icon{
+  font-size:35px;
+  margin-bottom:12px;
+}
+
+.upload b{
+  font-size:15px;
+}
+
+.upload span{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:7px;
+}
+
+#imageInput{
+  display:none;
+}
+
+.preview{
+  width:100%;
+  max-height:320px;
+  object-fit:contain;
+  border-radius:15px;
+  display:none;
+  margin-top:15px;
+}
+
+/* BUTTONS */
+
+.btn{
+  width:100%;
+  height:51px;
+  border:0;
+  border-radius:15px;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+.gold{
+  background:var(--gold);
+  color:#111;
+}
+
+.dark-btn{
+  background:#1a1a17;
+  border:1px solid var(--border);
+  color:#ddd8ca;
+}
+
+/* URL */
+
+.url-input{
+  width:100%;
+  height:55px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:#0a0a09;
+  color:white;
+  padding:0 15px;
+  direction:ltr;
+  outline:none;
+  margin-bottom:10px;
+}
+
+.support{
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.support span{
+  padding:7px 11px;
+  border-radius:20px;
+  background:#191916;
+  color:#aaa69a;
+  font-size:10px;
+}
+
+/* RECIPE */
+
+.recipe{
+  background:#121210;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:12px;
+}
+
+.recipe h3{
+  font-size:17px;
+}
+
+.recipe .source{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:5px;
+}
+
+.recipe-stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin-top:14px;
+}
+
+.recipe-stat{
+  background:#0b0b0a;
+  border-radius:12px;
+  padding:10px 4px;
+  text-align:center;
+}
+
+.recipe-stat b{
+  display:block;
+  color:var(--gold2);
+  font-size:14px;
+}
+
+.recipe-stat span{
+  color:var(--muted);
+  font-size:8px;
+}
+
+.ingredient{
+  display:flex;
+  justify-content:space-between;
+  padding:11px;
+  margin-top:7px;
+  background:#0d0d0c;
+  border-radius:11px;
+  font-size:11px;
+}
+
+.ingredient span{
+  color:var(--muted);
+}
+
+.step{
+  background:#0d0d0c;
+  padding:12px;
+  margin-top:7px;
+  border-radius:11px;
+  color:#aaa69a;
+  font-size:11px;
+  line-height:1.8;
+}
+
+/* DAILY */
+
+.daily-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px;
+  background:#10100f;
+  border:1px solid var(--border);
+  border-radius:15px;
+  margin-bottom:8px;
+}
+
+.daily-item b{
+  font-size:12px;
+}
+
+.daily-item span{
+  color:var(--gold2);
+  font-size:11px;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:70px;
+  background:rgba(10,10,9,.92);
+  border-top:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  display:flex;
+  justify-content:center;
+  z-index:50;
+}
+
+.nav{
+  width:min(600px,100%);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+
+.nav button{
+  background:none;
+  border:0;
+  color:#77746b;
+  font-size:10px;
+}
+
+.nav button b{
+  display:block;
+  font-size:20px;
+  margin-bottom:4px;
+}
+
+.nav button.active{
+  color:var(--gold2);
+}
+
+/* TOAST */
+
+#toast{
+  position:fixed;
+  left:50%;
+  bottom:85px;
+  transform:translateX(-50%) translateY(20px);
+  background:#1b1b17;
+  border:1px solid rgba(184,164,93,.25);
+  color:#ddd8ca;
+  padding:12px 17px;
+  border-radius:13px;
+  font-size:11px;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  z-index:100;
+}
+
+#toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:600px){
+  main{
+    width:94%;
+  }
+
+  .recipe-stats{
+    grid-template-columns:repeat(4,1fr);
+  }
+}
+</style>
 </head>
 
 <body>
 
+<!-- ONBOARDING -->
+
+<section id="onboarding">
+
+<div class="onboard">
+
+<div class="brand-big">
+  <div class="logo">ل</div>
+  <h1>لُقمة</h1>
+  <p>خلينا نضبط التطبيق على احتياجك</p>
+</div>
+
+<div class="progress">
+  <i id="progress"></i>
+</div>
+
+<div class="step active" data-step="1">
+  <h2>شنو اسمك؟</h2>
+  <p>حتى نخلي تجربتك شخصية.</p>
+
+  <div class="field">
+    <label>الاسم</label>
+    <input id="name" placeholder="اكتب اسمك">
+  </div>
+
+  <button class="next" onclick="nextStep()">متابعة</button>
+</div>
+
+<div class="step" data-step="2">
+  <h2>معلوماتك الأساسية</h2>
+  <p>نحتاجها حتى نحسب احتياجك اليومي بشكل تقديري.</p>
+
+  <div class="field">
+    <label>العمر</label>
+    <input id="age" type="number" placeholder="مثلاً 18">
+  </div>
+
+  <div class="field">
+    <label>الوزن بالكيلو</label>
+    <input id="weight" type="number" placeholder="مثلاً 70">
+  </div>
+
+  <div class="field">
+    <label>الطول بالسنتيمتر</label>
+    <input id="height" type="number" placeholder="مثلاً 170">
+  </div>
+
+  <button class="next" onclick="nextStep()">متابعة</button>
+</div>
+
+<div class="step" data-step="3">
+  <h2>مستوى نشاطك</h2>
+  <p>اختار الأقرب إلى حياتك اليومية.</p>
+
+  <div class="field">
+    <select id="activity">
+      <option value="1.2">قليل جدًا</option>
+      <option value="1.375">خفيف</option>
+      <option value="1.55" selected>متوسط</option>
+      <option value="1.725">عالٍ</option>
+      <option value="1.9">عالٍ جدًا</option>
+    </select>
+  </div>
+
+  <button class="next" onclick="nextStep()">متابعة</button>
+</div>
+
+<div class="step" data-step="4">
+  <h2>شنو هدفك؟</h2>
+  <p>اختار الهدف اللي تريد لُقمة يساعدك عليه.</p>
+
+  <div class="goals">
+
+    <button class="goal" onclick="selectGoal(this,'loss')">
+      🔻<br>نقص وزن
+    </button>
+
+    <button class="goal" onclick="selectGoal(this,'gain')">
+      🔺<br>زيادة وزن
+    </button>
+
+    <button class="goal" onclick="selectGoal(this,'maintain')">
+      ⚖️<br>تثبيت الوزن
+    </button>
+
+    <button class="goal" onclick="selectGoal(this,'muscle')">
+      💪<br>بناء عضل
+    </button>
+
+  </div>
+
+  <button class="next" onclick="finishSetup()">ابدأ مع لُقمة</button>
+</div>
+
+</div>
+</section>
+
+
+<!-- APP -->
+
+<section id="app" class="hidden">
+
 <header>
 
-  <div class="brand">
-
-    <div class="logo">
-      ل
-    </div>
-
-    <div class="brand-text">
-      <h1>لُقمة</h1>
-      <span>مساعدك الغذائي الذكي</span>
-    </div>
-
+<div class="header-brand">
+  <div class="header-logo">ل</div>
+  <div>
+    <b>لُقمة</b>
+    <span>مساعدك الغذائي الذكي</span>
   </div>
+</div>
 
-  <div class="status">
-    ● متصل
-  </div>
+<div class="avatar" id="avatar">ل</div>
 
 </header>
 
 
 <main>
 
-  <section class="hero">
+<!-- HOME -->
 
-    <h2>
-      اعرف وجبتك مع <span>لُقمة</span>
-    </h2>
+<section id="home" class="page active">
 
-    <p>
-      صوّر وجبتك وخلي لُقمة يحللها لك ويعطيك
-      السعرات والبروتين والكربوهيدرات والدهون
-      والمكونات بشكل تقريبي.
-    </p>
+<div class="welcome">
+  <small>صباح الخير 👋</small>
+  <h1>أهلًا <span id="userName">بك</span></h1>
+</div>
 
-  </section>
+<div class="calorie-card">
 
+<div class="calorie-top">
 
-  <section class="glass upload-card">
+<div>
+  <small>احتياجك اليومي</small>
+  <div class="calorie-number">
+    <span id="dailyGoal">0</span>
+    <span>kcal</span>
+  </div>
+</div>
 
-    <label
-      class="upload-area"
-      for="imageInput"
-      id="uploadArea"
-    >
+<div class="ring" id="ring">
+  <div id="percent">0%</div>
+</div>
 
-      <div class="upload-icon">
-        📷
-      </div>
+</div>
 
-      <h3>
-        اختر صورة الوجبة
-      </h3>
+<div class="progress-line">
+  <i id="calorieProgress"></i>
+</div>
 
-      <p>
-        اضغط هنا لاختيار صورة من جهازك
-      </p>
-
-      <img
-        id="preview"
-        class="preview"
-        alt="صورة الوجبة"
-      >
-
-    </label>
+</div>
 
 
-    <input
-      type="file"
-      id="imageInput"
-      accept="image/*"
-    >
+<div class="macro-grid">
+
+<div class="macro">
+  <b id="todayProtein">0g</b>
+  <span>بروتين</span>
+  <small>هدف <span id="proteinGoal">0</span>g</small>
+</div>
+
+<div class="macro">
+  <b id="todayCarbs">0g</b>
+  <span>كارب</span>
+  <small>هدف <span id="carbsGoal">0</span>g</small>
+</div>
+
+<div class="macro">
+  <b id="todayFat">0g</b>
+  <span>دهون</span>
+  <small>هدف <span id="fatGoal">0</span>g</small>
+</div>
+
+</div>
 
 
-    <div class="actions">
+<h3 class="quick-title">شنو تريد تسوي؟</h3>
 
-      <button
-        class="btn btn-primary"
-        id="analyzeBtn"
-        disabled
-      >
-        ✨ تحليل الوجبة
-      </button>
+<div class="quick-grid">
 
-      <button
-        class="btn btn-secondary"
-        id="clearBtn"
-      >
-        مسح
-      </button>
+<button class="quick" onclick="showPage('scan')">
+  <div class="icon">📷</div>
+  <b>حلل وجبة</b>
+  <span>صور الأكل وخلي لُقمة يحلله</span>
+</button>
 
-    </div>
+<button class="quick" onclick="showPage('extract')">
+  <div class="icon">🎥</div>
+  <b>استخرج وصفة</b>
+  <span>ضع رابط TikTok أو Instagram</span>
+</button>
 
+<button class="quick" onclick="showPage('saved')">
+  <div class="icon">🔖</div>
+  <b>وصفاتي المحفوظة</b>
+  <span>كل وصفاتك بمكان واحد</span>
+</button>
 
-    <div
-      class="loading"
-      id="loading"
-    >
+<button class="quick" onclick="showPage('daily')">
+  <div class="icon">📊</div>
+  <b>يومي</b>
+  <span>تابع أكلك وسعراتك</span>
+</button>
 
-      <div class="spinner"></div>
+</div>
 
-      <p>
-        لُقمة يحلل وجبتك...
-      </p>
-
-    </div>
-
-
-    <div
-      class="error"
-      id="error"
-    ></div>
-
-  </section>
+</section>
 
 
-  <section
-    class="glass result-card"
-    id="result"
-  >
+<!-- SCAN -->
 
-    <div class="result-title">
+<section id="scan" class="page">
 
-      <div>
-        <h2 id="mealTitle">
-          الوجبة
-        </h2>
+<div class="page-title">
+  <h2>📷 تحليل الوجبة</h2>
+  <p>اختار صورة الوجبة وسيحاول لُقمة تقدير مكوناتها وقيمها الغذائية.</p>
+</div>
 
-        <span>
-          تحليل تقريبي بالذكاء الاصطناعي
-        </span>
-      </div>
+<div class="card">
 
-    </div>
+<label class="upload" for="imageInput">
+  <div class="upload-icon">📸</div>
+  <b>اختار صورة الوجبة</b>
+  <span>اضغط هنا لاختيار صورة من جهازك</span>
+</label>
 
+<input id="imageInput" type="file" accept="image/*">
 
-    <div class="calories">
+<img id="preview" class="preview">
 
-      <strong id="calories">
-        0
-      </strong>
+<button class="btn gold" id="analyzeBtn" disabled onclick="analyzeImage()">
+  ✨ تحليل الوجبة
+</button>
 
-      <span>
-        سعرة حرارية تقريبًا
-      </span>
+<button class="btn dark-btn" onclick="clearImage()">
+  مسح الصورة
+</button>
 
-    </div>
+</div>
 
+<div id="scanResult"></div>
 
-    <div class="macros">
-
-      <div class="macro">
-        <strong id="protein">0</strong>
-        <span>بروتين غ</span>
-      </div>
-
-      <div class="macro">
-        <strong id="carbs">0</strong>
-        <span>كربوهيدرات غ</span>
-      </div>
-
-      <div class="macro">
-        <strong id="fat">0</strong>
-        <span>دهون غ</span>
-      </div>
-
-    </div>
+</section>
 
 
-    <div class="section">
+<!-- EXTRACT -->
 
-      <h3>
-        🥗 المكونات
-      </h3>
+<section id="extract" class="page">
 
-      <div
-        class="ingredients"
-        id="ingredients"
-      ></div>
+<div class="page-title">
+  <h2>🎥 استخراج وصفة</h2>
+  <p>ضع رابط فيديو الوصفة وسنحاول استخراج المعلومات الموجودة فيه.</p>
+</div>
 
-    </div>
+<div class="card">
+
+<div class="support">
+  <span>TikTok</span>
+  <span>Instagram</span>
+</div>
+
+<input
+  id="videoUrl"
+  class="url-input"
+  placeholder="https://www.tiktok.com/..."
+>
+
+<button class="btn gold" onclick="extractRecipe()">
+  ✨ استخراج الوصفة
+</button>
+
+</div>
+
+<div id="extractResult"></div>
+
+</section>
 
 
-    <div class="section">
+<!-- SAVED -->
 
-      <h3>
-        👨‍🍳 طريقة التحضير
-      </h3>
+<section id="saved" class="page">
 
-      <div
-        class="steps"
-        id="steps"
-      ></div>
+<div class="page-title">
+  <h2>🔖 وصفاتي</h2>
+  <p>الوصفات التي حفظتها من الفيديوهات أو التحليل.</p>
+</div>
 
-    </div>
+<div id="savedRecipes"></div>
 
-  </section>
+</section>
+
+
+<!-- DAILY -->
+
+<section id="daily" class="page">
+
+<div class="page-title">
+  <h2>📊 يومي</h2>
+  <p>تابع كل شيء أكلته اليوم.</p>
+</div>
+
+<div class="calorie-card">
+
+<div class="calorie-top">
+<div>
+  <small>المستهلك اليوم</small>
+  <div class="calorie-number">
+    <span id="dailyConsumed">0</span>
+    <span>/ <span id="dailyGoal2">0</span></span>
+  </div>
+</div>
+</div>
+
+<div class="progress-line">
+  <i id="dailyBar"></i>
+</div>
+
+</div>
+
+<div id="dailyList"></div>
+
+</section>
 
 </main>
 
 
-<footer>
-  لُقمة © 2026 — تحليل تقريبي وليس بديلاً عن المختص الغذائي
-</footer>
+<div class="bottom-nav">
+
+<div class="nav">
+
+<button class="active" onclick="showPage('home',this)">
+  <b>⌂</b>
+  الرئيسية
+</button>
+
+<button onclick="showPage('scan',this)">
+  <b>📷</b>
+  تحليل
+</button>
+
+<button onclick="showPage('extract',this)">
+  <b>🎥</b>
+  وصفة
+</button>
+
+<button onclick="showPage('saved',this)">
+  <b>🔖</b>
+  المحفوظة
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<div id="toast"></div>
 
 
 <script>
 
-  /* =========================
-     عناصر الصفحة
-  ========================= */
+const API = "";
 
-  const imageInput =
-    document.getElementById("imageInput");
+let currentStep = 1;
+let selectedGoal = "";
 
-  const preview =
-    document.getElementById("preview");
+let profile =
+JSON.parse(localStorage.getItem("luqmaProfile") || "null");
 
-  const analyzeBtn =
-    document.getElementById("analyzeBtn");
+let meals =
+JSON.parse(localStorage.getItem("luqmaMeals") || "[]");
 
-  const clearBtn =
-    document.getElementById("clearBtn");
-
-  const loading =
-    document.getElementById("loading");
-
-  const result =
-    document.getElementById("result");
-
-  const errorBox =
-    document.getElementById("error");
+let saved =
+JSON.parse(localStorage.getItem("luqmaSaved") || "[]");
 
 
-  /* =========================
-     اختيار الصورة
-  ========================= */
+/* =========================
+   START
+========================= */
 
-  imageInput.addEventListener(
-    "change",
-    () => {
+if(profile){
+  document.getElementById("onboarding").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+  loadApp();
+}
 
-      const file =
-        imageInput.files[0];
 
-      if (!file) {
-        return;
-      }
+/* =========================
+   ONBOARDING
+========================= */
 
-      const reader =
-        new FileReader();
+function nextStep(){
 
-      reader.onload = (event) => {
+  const current =
+    document.querySelector(`.step[data-step="${currentStep}"]`);
 
-        preview.src =
-          event.target.result;
+  if(currentStep === 1 &&
+     !document.getElementById("name").value.trim()){
+    toast("اكتب اسمك أولاً");
+    return;
+  }
 
-        preview.style.display =
-          "block";
+  if(currentStep === 2){
 
-        analyzeBtn.disabled =
-          false;
+    const age = +document.getElementById("age").value;
+    const weight = +document.getElementById("weight").value;
+    const height = +document.getElementById("height").value;
 
-        result.style.display =
-          "none";
-
-        errorBox.style.display =
-          "none";
-
-      };
-
-      reader.readAsDataURL(file);
-
+    if(!age || !weight || !height){
+      toast("أكمل معلوماتك أولاً");
+      return;
     }
+  }
+
+  current.classList.remove("active");
+
+  currentStep++;
+
+  document
+    .querySelector(`.step[data-step="${currentStep}"]`)
+    .classList.add("active");
+
+  document.getElementById("progress").style.width =
+    (currentStep * 25) + "%";
+}
+
+
+function selectGoal(btn,goal){
+
+  document
+    .querySelectorAll(".goal")
+    .forEach(x=>x.classList.remove("selected"));
+
+  btn.classList.add("selected");
+
+  selectedGoal = goal;
+}
+
+
+function finishSetup(){
+
+  if(!selectedGoal){
+    toast("اختار هدفك أولاً");
+    return;
+  }
+
+  const age =
+    +document.getElementById("age").value;
+
+  const weight =
+    +document.getElementById("weight").value;
+
+  const height =
+    +document.getElementById("height").value;
+
+  const activity =
+    +document.getElementById("activity").value;
+
+  /*
+    تقدير تقريبي محايد:
+    نستخدم متوسط معامل BMR لأن الجنس
+    غير مطلوب في هذا الإصدار.
+  */
+
+  const bmr =
+    (10 * weight) +
+    (6.25 * height) -
+    (5 * age) -
+    78;
+
+  let tdee =
+    bmr * activity;
+
+  if(selectedGoal === "loss")
+    tdee -= 400;
+
+  if(selectedGoal === "gain")
+    tdee += 300;
+
+  if(selectedGoal === "muscle")
+    tdee += 200;
+
+  tdee =
+    Math.round(tdee / 50) * 50;
+
+  const protein =
+    Math.round(weight *
+      (selectedGoal === "muscle" ? 1.8 : 1.5));
+
+  const fat =
+    Math.round(
+      (tdee * .27) / 9
+    );
+
+  const carbs =
+    Math.max(
+      0,
+      Math.round(
+        (tdee -
+        (protein * 4) -
+        (fat * 9)) / 4
+      )
+    );
+
+  profile = {
+    name:
+      document.getElementById("name").value.trim(),
+
+    age,
+    weight,
+    height,
+    activity,
+    goal:selectedGoal,
+
+    calories:tdee,
+    protein,
+    carbs,
+    fat
+  };
+
+  localStorage.setItem(
+    "luqmaProfile",
+    JSON.stringify(profile)
   );
 
+  document.getElementById("onboarding").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
 
-  /* =========================
-     تحليل الصورة
-  ========================= */
+  loadApp();
+}
 
-  analyzeBtn.addEventListener(
-    "click",
-    async () => {
 
-      const file =
-        imageInput.files[0];
+/* =========================
+   APP
+========================= */
 
-      if (!file) {
-        return;
-      }
+function loadApp(){
 
-      loading.style.display =
-        "block";
+  document.getElementById("userName").textContent =
+    profile.name;
 
-      analyzeBtn.disabled =
-        true;
+  document.getElementById("avatar").textContent =
+    profile.name.charAt(0);
 
-      errorBox.style.display =
-        "none";
+  document.getElementById("dailyGoal").textContent =
+    profile.calories;
 
-      result.style.display =
-        "none";
+  document.getElementById("dailyGoal2").textContent =
+    profile.calories;
 
+  document.getElementById("proteinGoal").textContent =
+    profile.protein;
 
-      try {
+  document.getElementById("carbsGoal").textContent =
+    profile.carbs;
 
-        const formData =
-          new FormData();
+  document.getElementById("fatGoal").textContent =
+    profile.fat;
 
-        formData.append(
-          "image",
-          file
-        );
+  updateDaily();
 
+  renderSaved();
+}
 
-        /*
-          بما أن index.html سيعمل
-          من نفس Railway:
-        */
 
-        const response =
-          await fetch(
-            "/api/analyze-image",
-            {
-              method: "POST",
-              body: formData
-            }
-          );
+/* =========================
+   NAVIGATION
+========================= */
 
+function showPage(id,button){
 
-        const data =
-          await response.json();
+  document
+    .querySelectorAll(".page")
+    .forEach(x=>x.classList.remove("active"));
 
+  document
+    .getElementById(id)
+    .classList.add("active");
 
-        if (!response.ok) {
+  document
+    .querySelectorAll(".nav button")
+    .forEach(x=>x.classList.remove("active"));
 
-          throw new Error(
-            data.error ||
-            "حدث خطأ أثناء التحليل"
-          );
+  if(button)
+    button.classList.add("active");
 
-        }
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 
+  if(id === "daily")
+    updateDaily();
 
-        showResult(data);
+  if(id === "saved")
+    renderSaved();
+}
 
-      }
 
-      catch (error) {
+/* =========================
+   IMAGE
+========================= */
 
-        errorBox.textContent =
-          error.message ||
-          "تعذر الاتصال بالسيرفر";
+document
+.getElementById("imageInput")
+.addEventListener("change",function(){
 
-        errorBox.style.display =
-          "block";
+  const file = this.files[0];
 
-      }
+  if(!file)
+    return;
 
-      finally {
+  const reader =
+    new FileReader();
 
-        loading.style.display =
-          "none";
+  reader.onload = e=>{
 
-        analyzeBtn.disabled =
-          false;
+    const preview =
+      document.getElementById("preview");
 
-      }
+    preview.src =
+      e.target.result;
 
-    }
-  );
-
-
-  /* =========================
-     عرض النتيجة
-  ========================= */
-
-  function showResult(data) {
-
-    document.getElementById(
-      "mealTitle"
-    ).textContent =
-      data.title ||
-      "وجبة غير معروفة";
-
-
-    document.getElementById(
-      "calories"
-    ).textContent =
-      data.calories ||
-      0;
-
-
-    document.getElementById(
-      "protein"
-    ).textContent =
-      data.macros?.protein ||
-      0;
-
-
-    document.getElementById(
-      "carbs"
-    ).textContent =
-      data.macros?.carbs ||
-      0;
-
-
-    document.getElementById(
-      "fat"
-    ).textContent =
-      data.macros?.fat ||
-      0;
-
-
-    const ingredients =
-      document.getElementById(
-        "ingredients"
-      );
-
-    ingredients.innerHTML = "";
-
-
-    if (
-      Array.isArray(
-        data.ingredients
-      )
-    ) {
-
-      data.ingredients.forEach(
-        item => {
-
-          const div =
-            document.createElement(
-              "div"
-            );
-
-          div.className =
-            "ingredient";
-
-          div.innerHTML = `
-            <b>${escapeHTML(
-              item.name || "مكون"
-            )}</b>
-            <span>${escapeHTML(
-              item.amount || ""
-            )}</span>
-          `;
-
-          ingredients.appendChild(
-            div
-          );
-
-        }
-      );
-
-    }
-
-
-    const steps =
-      document.getElementById(
-        "steps"
-      );
-
-    steps.innerHTML = "";
-
-
-    if (
-      Array.isArray(
-        data.steps
-      )
-    ) {
-
-      data.steps.forEach(
-        (step, index) => {
-
-          const div =
-            document.createElement(
-              "div"
-            );
-
-          div.className =
-            "step";
-
-          div.textContent =
-            `${index + 1}. ${step}`;
-
-          steps.appendChild(
-            div
-          );
-
-        }
-      );
-
-    }
-
-
-    result.style.display =
+    preview.style.display =
       "block";
 
-    result.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+    document.getElementById("analyzeBtn")
+      .disabled = false;
 
-  }
+  };
+
+  reader.readAsDataURL(file);
+});
 
 
-  /* =========================
-     تنظيف النص
-  ========================= */
+function clearImage(){
 
-  function escapeHTML(text) {
+  document.getElementById("imageInput").value = "";
 
-    return String(text)
-      .replace(
-        /&/g,
-        "&amp;"
-      )
-      .replace(
-        /</g,
-        "&lt;"
-      )
-      .replace(
-        />/g,
-        "&gt;"
-      )
-      .replace(
-        /"/g,
-        "&quot;"
-      )
-      .replace(
-        /'/g,
-        "&#039;"
+  document.getElementById("preview").style.display =
+    "none";
+
+  document.getElementById("analyzeBtn").disabled =
+    true;
+
+  document.getElementById("scanResult").innerHTML = "";
+}
+
+
+async function analyzeImage(){
+
+  const file =
+    document.getElementById("imageInput").files[0];
+
+  if(!file)
+    return;
+
+  const btn =
+    document.getElementById("analyzeBtn");
+
+  btn.disabled = true;
+  btn.textContent = "جاري التحليل...";
+
+  try{
+
+    const form =
+      new FormData();
+
+    form.append("image",file);
+
+    const response =
+      await fetch(
+        API + "/api/analyze-image",
+        {
+          method:"POST",
+          body:form
+        }
       );
 
+    const data =
+      await response.json();
+
+    if(!response.ok)
+      throw new Error(data.error || "فشل التحليل");
+
+    renderRecipe(
+      data,
+      "scanResult"
+    );
+
+  }catch(error){
+
+    toast(error.message);
+
+  }finally{
+
+    btn.disabled = false;
+    btn.textContent = "✨ تحليل الوجبة";
+
+  }
+}
+
+
+/* =========================
+   EXTRACT RECIPE
+========================= */
+
+async function extractRecipe(){
+
+  const url =
+    document.getElementById("videoUrl").value.trim();
+
+  if(!url){
+    toast("ضع رابط الفيديو أولاً");
+    return;
   }
 
+  const box =
+    document.getElementById("extractResult");
 
-  /* =========================
-     زر المسح
-  ========================= */
+  box.innerHTML = `
+    <div class="card" style="text-align:center;color:#b8a45d">
+      جاري استخراج الوصفة...
+    </div>
+  `;
 
-  clearBtn.addEventListener(
-    "click",
-    () => {
+  try{
 
-      imageInput.value =
-        "";
+    const response =
+      await fetch(
+        API + "/api/extract-recipe",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            url
+          })
+        }
+      );
 
-      preview.src =
-        "";
+    const data =
+      await response.json();
 
-      preview.style.display =
-        "none";
+    if(!response.ok)
+      throw new Error(
+        data.error ||
+        "تعذر استخراج الوصفة"
+      );
 
-      analyzeBtn.disabled =
-        true;
+    renderRecipe(
+      data,
+      "extractResult",
+      url
+    );
 
-      result.style.display =
-        "none";
+  }catch(error){
 
-      errorBox.style.display =
-        "none";
+    box.innerHTML = `
+      <div class="card" style="color:#b96c6c">
+        ${escapeHTML(error.message)}
+      </div>
+    `;
 
-    }
+  }
+}
+
+
+/* =========================
+   RENDER RECIPE
+========================= */
+
+function renderRecipe(
+  data,
+  containerId,
+  source=""
+){
+
+  const box =
+    document.getElementById(containerId);
+
+  const ingredients =
+    Array.isArray(data.ingredients)
+      ? data.ingredients
+      : [];
+
+  const steps =
+    Array.isArray(data.steps)
+      ? data.steps
+      : [];
+
+  const recipeId =
+    Date.now().toString();
+
+  box.innerHTML = `
+
+  <div class="recipe">
+
+    <h3>
+      ${escapeHTML(data.title || "وصفة")}
+    </h3>
+
+    <div class="source">
+      ${source
+        ? escapeHTML(source)
+        : "تحليل لُقمة"}
+    </div>
+
+    <div class="recipe-stats">
+
+      <div class="recipe-stat">
+        <b>${data.calories || 0}</b>
+        <span>سعرة</span>
+      </div>
+
+      <div class="recipe-stat">
+        <b>${data.macros?.protein || 0}g</b>
+        <span>بروتين</span>
+      </div>
+
+      <div class="recipe-stat">
+        <b>${data.macros?.carbs || 0}g</b>
+        <span>كارب</span>
+      </div>
+
+      <div class="recipe-stat">
+        <b>${data.macros?.fat || 0}g</b>
+        <span>دهون</span>
+      </div>
+
+    </div>
+
+    <h4 style="margin-top:20px;font-size:13px">
+      🥗 المكونات
+    </h4>
+
+    ${ingredients.map(x=>`
+      <div class="ingredient">
+        <b>${escapeHTML(x.name || "")}</b>
+        <span>${escapeHTML(x.amount || "")}</span>
+      </div>
+    `).join("")}
+
+    <h4 style="margin-top:20px;font-size:13px">
+      👨‍🍳 طريقة التحضير
+    </h4>
+
+    ${steps.map((x,i)=>`
+      <div class="step">
+        ${i+1}. ${escapeHTML(x)}
+      </div>
+    `).join("")}
+
+    <button
+      class="btn gold"
+      onclick='saveRecipe(${JSON.stringify({
+        ...data,
+        source
+      })})'
+    >
+      🔖 حفظ الوصفة
+    </button>
+
+    <button
+      class="btn dark-btn"
+      onclick='addMeal(${JSON.stringify(data)})'
+    >
+      ➕ إضافة إلى يومي
+    </button>
+
+  </div>
+
+  `;
+}
+
+
+/* =========================
+   SAVE
+========================= */
+
+function saveRecipe(recipe){
+
+  saved.unshift({
+    ...recipe,
+    id:Date.now()
+  });
+
+  localStorage.setItem(
+    "luqmaSaved",
+    JSON.stringify(saved)
   );
+
+  toast("تم حفظ الوصفة 🔖");
+
+  renderSaved();
+}
+
+
+function renderSaved(){
+
+  const box =
+    document.getElementById("savedRecipes");
+
+  if(!saved.length){
+
+    box.innerHTML = `
+      <div class="card" style="text-align:center;color:#777">
+        ما عندك وصفات محفوظة حاليًا.
+      </div>
+    `;
+
+    return;
+  }
+
+  box.innerHTML =
+    saved.map((r,index)=>`
+
+      <div class="recipe">
+
+        <h3>
+          ${escapeHTML(r.title || "وصفة")}
+        </h3>
+
+        <div class="recipe-stats">
+
+          <div class="recipe-stat">
+            <b>${r.calories || 0}</b>
+            <span>سعرة</span>
+          </div>
+
+          <div class="recipe-stat">
+            <b>${r.macros?.protein || 0}g</b>
+            <span>بروتين</span>
+          </div>
+
+          <div class="recipe-stat">
+            <b>${r.macros?.carbs || 0}g</b>
+            <span>كارب</span>
+          </div>
+
+          <div class="recipe-stat">
+            <b>${r.macros?.fat || 0}g</b>
+            <span>دهون</span>
+          </div>
+
+        </div>
+
+        <button
+          class="btn dark-btn"
+          onclick="deleteSaved(${index})"
+        >
+          حذف
+        </button>
+
+      </div>
+
+    `).join("");
+}
+
+
+function deleteSaved(index){
+
+  saved.splice(index,1);
+
+  localStorage.setItem(
+    "luqmaSaved",
+    JSON.stringify(saved)
+  );
+
+  renderSaved();
+
+  toast("تم حذف الوصفة");
+}
+
+
+/* =========================
+   DAILY
+========================= */
+
+function addMeal(data){
+
+  meals.push({
+
+    id:Date.now(),
+
+    date:
+      new Date().toISOString()
+      .slice(0,10),
+
+    title:
+      data.title || "وجبة",
+
+    calories:
+      Number(data.calories || 0),
+
+    protein:
+      Number(data.macros?.protein || 0),
+
+    carbs:
+      Number(data.macros?.carbs || 0),
+
+    fat:
+      Number(data.macros?.fat || 0)
+
+  });
+
+  localStorage.setItem(
+    "luqmaMeals",
+    JSON.stringify(meals)
+  );
+
+  updateDaily();
+
+  toast("تمت إضافة الوجبة إلى يومك 🍽️");
+}
+
+
+function updateDaily(){
+
+  const today =
+    new Date().toISOString().slice(0,10);
+
+  const todayMeals =
+    meals.filter(x=>x.date === today);
+
+  const calories =
+    todayMeals.reduce(
+      (a,b)=>a+b.calories,0
+    );
+
+  const protein =
+    todayMeals.reduce(
+      (a,b)=>a+b.protein,0
+    );
+
+  const carbs =
+    todayMeals.reduce(
+      (a,b)=>a+b.carbs,0
+    );
+
+  const fat =
+    todayMeals.reduce(
+      (a,b)=>a+b.fat,0
+    );
+
+  document.getElementById("dailyConsumed")
+    .textContent = calories;
+
+  document.getElementById("todayProtein")
+    .textContent = protein + "g";
+
+  document.getElementById("todayCarbs")
+    .textContent = carbs + "g";
+
+  document.getElementById("todayFat")
+    .textContent = fat + "g";
+
+  const percent =
+    profile.calories
+      ? Math.min(
+          100,
+          Math.round(
+            calories /
+            profile.calories *
+            100
+          )
+        )
+      : 0;
+
+  document.getElementById("percent")
+    .textContent = percent + "%";
+
+  document.getElementById("calorieProgress")
+    .style.width = percent + "%";
+
+  document.getElementById("dailyBar")
+    .style.width = percent + "%";
+
+  document.getElementById("ring")
+    .style.background =
+      `conic-gradient(
+        var(--gold)
+        ${percent * 3.6}deg,
+        #282820
+        0deg
+      )`;
+
+  const list =
+    document.getElementById("dailyList");
+
+  if(!todayMeals.length){
+
+    list.innerHTML = `
+      <div class="card" style="text-align:center;color:#777">
+        ما أضفت أي وجبة اليوم.
+      </div>
+    `;
+
+    return;
+  }
+
+  list.innerHTML =
+    todayMeals.map(x=>`
+
+      <div class="daily-item">
+
+        <b>${escapeHTML(x.title)}</b>
+
+        <span>
+          ${x.calories} kcal
+        </span>
+
+      </div>
+
+    `).join("");
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+function toast(message){
+
+  const box =
+    document.getElementById("toast");
+
+  box.textContent =
+    message;
+
+  box.classList.add("show");
+
+  setTimeout(()=>{
+    box.classList.remove("show");
+  },2500);
+}
+
+
+/* =========================
+   ESCAPE
+========================= */
+
+function escapeHTML(text){
+
+  return String(text)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
 
 </script>
 
