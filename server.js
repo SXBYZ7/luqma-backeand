@@ -1,10 +1,23 @@
 const express = require("express");
+const cors = require("cors");
 const multer = require("multer");
 const OpenAI = require("openai");
 
 const app = express();
 
-app.use(express.json({ limit: "2mb" }));
+const PORT = process.env.PORT || 3000;
+
+/* =========================
+   Middleware
+========================= */
+
+app.use(cors());
+
+app.use(
+  express.json({
+    limit: "5mb"
+  })
+);
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -13,7 +26,10 @@ const upload = multer({
   }
 });
 
-const PORT = process.env.PORT || 3000;
+
+/* =========================
+   OpenAI
+========================= */
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -28,23 +44,23 @@ app.get("/", (req, res) => {
 
   res.json({
     app: "لُقمة",
-    version: "V2",
+    version: "V3",
     status: "online",
-    message: "Backend يعمل بنجاح ✅"
+    message: "Luqma Backend يعمل بنجاح ✅"
   });
 
 });
 
 
 /* =========================
-   اختبار السيرفر
+   اختبار API
 ========================= */
 
 app.get("/api/test", (req, res) => {
 
   res.json({
     success: true,
-    message: "لُقمة Backend يعمل بشكل صحيح 🚀"
+    message: "Luqma API يعمل بشكل صحيح 🚀"
   });
 
 });
@@ -54,7 +70,7 @@ app.get("/api/test", (req, res) => {
    دالة الذكاء الاصطناعي
 ========================= */
 
-async function askAI(prompt, imageBase64 = null) {
+async function askAI(prompt, imageData = null) {
 
   const content = [
     {
@@ -63,33 +79,32 @@ async function askAI(prompt, imageBase64 = null) {
     }
   ];
 
-
-  if (imageBase64) {
+  if (imageData) {
 
     content.push({
       type: "input_image",
-      image_url: `data:image/jpeg;base64,${imageBase64}`
+      image_url: imageData
     });
 
   }
 
+  const response =
+    await client.responses.create({
 
-  const response = await client.responses.create({
+      model:
+        process.env.OPENAI_MODEL ||
+        "gpt-5.6",
 
-    model: process.env.OPENAI_MODEL || "gpt-5.6",
+      input: [
+        {
+          role: "user",
+          content: content
+        }
+      ]
 
-    input: [
-      {
-        role: "user",
-        content: content
-      }
-    ]
-
-  });
-
+    });
 
   return response.output_text;
-
 }
 
 
@@ -97,127 +112,39 @@ async function askAI(prompt, imageBase64 = null) {
    تنظيف JSON
 ========================= */
 
-function cleanJSON(text) {
+function parseJSON(text) {
 
-  let result = text
+  let clean = String(text || "")
     .replace(/```json/gi, "")
     .replace(/```/g, "")
     .trim();
 
+  const first =
+    clean.indexOf("{");
 
-  const start = result.indexOf("{");
-  const end = result.lastIndexOf("}");
+  const last =
+    clean.lastIndexOf("}");
 
+  if (
+    first !== -1 &&
+    last !== -1 &&
+    last > first
+  ) {
 
-  if (start !== -1 && end !== -1) {
-
-    result =
-      result.substring(
-        start,
-        end + 1
+    clean =
+      clean.substring(
+        first,
+        last + 1
       );
 
   }
 
-
-  return JSON.parse(result);
-
+  return JSON.parse(clean);
 }
 
 
 /* =========================
-   إنشاء وصفة من المكونات
-========================= */
-
-app.post("/api/recipe", async (req, res) => {
-
-  try {
-
-    const ingredients =
-      req.body.ingredients;
-
-
-    if (!ingredients) {
-
-      return res.status(400).json({
-        error: "اكتب المكونات أولًا"
-      });
-
-    }
-
-
-    const prompt = `
-
-أنت الذكاء الاصطناعي الخاص بتطبيق "لُقمة".
-
-المستخدم لديه هذه المكونات:
-
-${ingredients}
-
-
-أنشئ له وصفة مناسبة ولذيذة.
-
-احسب السعرات والقيم الغذائية بشكل تقريبي.
-
-أريد النتيجة JSON فقط بدون أي كلام خارج JSON.
-
-استخدم هذا الشكل بالضبط:
-
-{
-  "title": "اسم الوصفة",
-  "calories": 500,
-  "macros": {
-    "protein": 30,
-    "carbs": 50,
-    "fat": 15
-  },
-  "ingredients": [
-    {
-      "name": "اسم المكون",
-      "amount": "الكمية"
-    }
-  ],
-  "steps": [
-    "الخطوة الأولى",
-    "الخطوة الثانية",
-    "الخطوة الثالثة"
-  ]
-}
-
-إذا لم تكن الكمية معروفة، استخدم تقديرًا منطقيًا واعتبر السعرات تقريبية.
-
-`;
-
-
-    const result =
-      await askAI(prompt);
-
-
-    const data =
-      cleanJSON(result);
-
-
-    res.json(data);
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    res.status(500).json({
-
-      error:
-        "حدث خطأ أثناء إنشاء الوصفة"
-
-    });
-
-  }
-
-});
-
-
-/* =========================
-   تحليل صورة الوجبة
+   تحليل صورة وجبة
 ========================= */
 
 app.post(
@@ -236,60 +163,79 @@ app.post(
       }
 
 
-      const imageBase64 =
-        req.file.buffer.toString("base64");
+      if (!process.env.OPENAI_API_KEY) {
+
+        return res.status(500).json({
+          error: "OPENAI_API_KEY غير موجود في Railway"
+        });
+
+      }
+
+
+      const mime =
+        req.file.mimetype ||
+        "image/jpeg";
+
+
+      const base64 =
+        req.file.buffer.toString(
+          "base64"
+        );
+
+
+      const imageData =
+        `data:${mime};base64,${base64}`;
 
 
       const prompt = `
 
-أنت الذكاء الاصطناعي الخاص بتطبيق "لُقمة".
+أنت "لُقمة"، مساعد ذكي متخصص بالطعام والتغذية.
 
-حلل صورة الطعام المرفقة.
+حلل صورة الوجبة المرفقة.
 
-حاول التعرف على:
+حاول تحديد:
 
-1. جميع الأطعمة الموجودة.
-2. الكمية التقريبية لكل طعام.
-3. السعرات لكل مكون.
-4. مجموع السعرات.
-5. البروتين.
-6. الكربوهيدرات.
-7. الدهون.
-8. اسم الوجبة.
-9. طريقة التحضير إذا كان بالإمكان استنتاجها.
+- اسم الوجبة
+- الأطعمة الموجودة
+- الكمية التقريبية
+- السعرات
+- البروتين
+- الكربوهيدرات
+- الدهون
+- المكونات
+- خطوات التحضير إذا كان بالإمكان استنتاجها
 
-مهم جدًا:
+مهم:
 
-الصورة لا تستطيع معرفة الوزن بدقة دائمًا.
+لا يمكنك معرفة الوزن الحقيقي بدقة من الصورة.
 
-لذلك استخدم تقديرات منطقية ولا تدّعي الدقة المطلقة.
+لذلك استخدم تقديرات معقولة، ولا تدّعي أن الأرقام دقيقة 100%.
 
-أرجع JSON فقط بهذا الشكل:
+أريد JSON فقط، بدون أي كلام خارجه.
+
+استخدم هذا الشكل:
 
 {
   "title": "اسم الوجبة",
-  "calories": 600,
+  "calories": 500,
   "macros": {
-    "protein": 40,
-    "carbs": 60,
-    "fat": 20
+    "protein": 30,
+    "carbs": 50,
+    "fat": 15
   },
   "ingredients": [
     {
       "name": "دجاج",
-      "amount": "150g"
-    },
-    {
-      "name": "أرز",
-      "amount": "200g"
+      "amount": "150 غرام"
     }
   ],
   "steps": [
-    "خطوة التحضير إذا كانت معروفة"
+    "الخطوة الأولى",
+    "الخطوة الثانية"
   ]
 }
 
-لا تضع أي نص خارج JSON.
+إذا كان شيء غير واضح في الصورة، اذكره كتقدير وليس كحقيقة.
 
 `;
 
@@ -297,24 +243,29 @@ app.post(
       const result =
         await askAI(
           prompt,
-          imageBase64
+          imageData
         );
 
 
       const data =
-        cleanJSON(result);
+        parseJSON(result);
 
 
       res.json(data);
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
-      console.error(error);
+      console.error(
+        "IMAGE ERROR:",
+        error
+      );
 
       res.status(500).json({
 
         error:
+          error?.message ||
           "حدث خطأ أثناء تحليل الصورة"
 
       });
@@ -326,37 +277,143 @@ app.post(
 
 
 /* =========================
-   تحليل نص وصفة
+   تحليل وصفة أو مكونات
 ========================= */
 
-app.post("/api/analyze-text", async (req, res) => {
+app.post(
+  "/api/analyze-text",
+  async (req, res) => {
 
-  try {
+    try {
 
-    const text =
-      req.body.text;
-
-
-    if (!text) {
-
-      return res.status(400).json({
-        error: "لم يتم إرسال النص"
-      });
-
-    }
+      const text =
+        req.body?.text;
 
 
-    const prompt = `
+      if (!text) {
 
-أنت ذكاء اصطناعي متخصص بالوصفات والتغذية.
+        return res.status(400).json({
+          error: "لم يتم إرسال النص"
+        });
+
+      }
+
+
+      if (!process.env.OPENAI_API_KEY) {
+
+        return res.status(500).json({
+          error: "OPENAI_API_KEY غير موجود في Railway"
+        });
+
+      }
+
+
+      const prompt = `
+
+أنت "لُقمة"، مساعد ذكي متخصص بالوصفات والتغذية.
 
 حلل النص التالي:
 
 ${text}
 
-استخرج الوصفة والمكونات والخطوات.
+استخرج الوصفة والمكونات والكميات والخطوات.
 
-ثم قدر السعرات والقيم الغذائية.
+احسب السعرات والقيم الغذائية بشكل تقريبي.
+
+أرجع JSON فقط بدون أي نص خارجه.
+
+الشكل المطلوب:
+
+{
+  "title": "اسم الوصفة",
+  "calories": 500,
+  "macros": {
+    "protein": 30,
+    "carbs": 50,
+    "fat": 15
+  },
+  "ingredients": [
+    {
+      "name": "اسم المكون",
+      "amount": "الكمية"
+    }
+  ],
+  "steps": [
+    "الخطوة الأولى",
+    "الخطوة الثانية"
+  ]
+}
+
+`;
+
+
+      const result =
+        await askAI(prompt);
+
+
+      const data =
+        parseJSON(result);
+
+
+      res.json(data);
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "TEXT ERROR:",
+        error
+      );
+
+      res.status(500).json({
+
+        error:
+          error?.message ||
+          "حدث خطأ أثناء تحليل النص"
+
+      });
+
+    }
+
+  }
+);
+
+
+/* =========================
+   إنشاء وصفة من مكونات
+========================= */
+
+app.post(
+  "/api/recipe",
+  async (req, res) => {
+
+    try {
+
+      const ingredients =
+        req.body?.ingredients;
+
+
+      if (!ingredients) {
+
+        return res.status(400).json({
+          error: "لم يتم إرسال المكونات"
+        });
+
+      }
+
+
+      const prompt = `
+
+أنت شيف وخبير تغذية في تطبيق "لُقمة".
+
+هذه المكونات:
+
+${ingredients}
+
+أنشئ وصفة مناسبة منها.
+
+احسب السعرات والقيم الغذائية بشكل تقريبي.
 
 أرجع JSON فقط:
 
@@ -368,35 +425,52 @@ ${text}
     "carbs": 50,
     "fat": 15
   },
-  "ingredients": [],
-  "steps": []
+  "ingredients": [
+    {
+      "name": "اسم المكون",
+      "amount": "الكمية"
+    }
+  ],
+  "steps": [
+    "الخطوة الأولى",
+    "الخطوة الثانية"
+  ]
 }
 
 `;
 
 
-    const result =
-      await askAI(prompt);
+      const result =
+        await askAI(prompt);
 
 
-    const data =
-      cleanJSON(result);
+      const data =
+        parseJSON(result);
 
 
-    res.json(data);
+      res.json(data);
 
+    }
 
-  } catch (error) {
+    catch (error) {
 
-    console.error(error);
+      console.error(
+        "RECIPE ERROR:",
+        error
+      );
 
-    res.status(500).json({
-      error: "حدث خطأ أثناء تحليل النص"
-    });
+      res.status(500).json({
+
+        error:
+          error?.message ||
+          "حدث خطأ أثناء إنشاء الوصفة"
+
+      });
+
+    }
 
   }
-
-});
+);
 
 
 /* =========================
@@ -409,7 +483,7 @@ app.listen(
   () => {
 
     console.log(
-      `Luqma Backend running on port ${PORT}`
+      `Luqma Backend V3 running on port ${PORT}`
     );
 
   }
