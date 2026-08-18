@@ -7,19 +7,11 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-/* =========================
-   Middleware
-========================= */
-
 app.use(cors());
 
 app.use(express.json({
   limit: "10mb"
 }));
-
-/* =========================
-   Upload
-========================= */
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -28,28 +20,22 @@ const upload = multer({
   }
 });
 
-/* =========================
-   OpenAI
-========================= */
-
-const client = process.env.OPENAI_API_KEY
-  ? new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
-    })
-  : null;
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 
 /* =========================
-   الرئيسية
+   الصفحة الرئيسية
 ========================= */
 
 app.get("/", (req, res) => {
 
   res.json({
-    app: "Luqma",
-    version: "V9",
+    app: "لُقمة",
     status: "online",
-    message: "Luqma Backend يعمل ✅"
+    version: "10.0",
+    service: "AI Food Analysis"
   });
 
 });
@@ -62,31 +48,17 @@ app.get("/", (req, res) => {
 app.get("/health", (req, res) => {
 
   res.json({
-    success: true,
     status: "online",
-    version: "V9",
-    openai: !!client
+    app: "Luqma",
+    version: "10.0",
+    openai: !!process.env.OPENAI_API_KEY
   });
 
 });
 
 
 /* =========================
-   API Test
-========================= */
-
-app.get("/api/test", (req, res) => {
-
-  res.json({
-    success: true,
-    message: "Luqma API يعمل بشكل صحيح 🚀"
-  });
-
-});
-
-
-/* =========================
-   تحليل الصورة
+   تحليل صورة
 ========================= */
 
 app.post(
@@ -99,22 +71,18 @@ app.post(
       if (!req.file) {
 
         return res.status(400).json({
-          success: false,
-          error: "لم يتم إرسال صورة"
+          error: "لم يتم اختيار صورة"
         });
 
       }
 
-
-      if (!client) {
+      if (!process.env.OPENAI_API_KEY) {
 
         return res.status(500).json({
-          success: false,
-          error: "OPENAI_API_KEY غير موجود في Railway"
+          error: "مفتاح OpenAI غير موجود"
         });
 
       }
-
 
       const base64 =
         req.file.buffer.toString("base64");
@@ -122,12 +90,12 @@ app.post(
       const mime =
         req.file.mimetype || "image/jpeg";
 
-      const imageUrl =
+      const image =
         `data:${mime};base64,${base64}`;
 
 
       const response =
-        await client.responses.create({
+        await openai.responses.create({
 
           model:
             process.env.OPENAI_MODEL ||
@@ -144,28 +112,24 @@ app.post(
                   type: "input_text",
 
                   text: `
-أنت "لُقمة"، مساعد ذكي متخصص بالطعام والتغذية.
+أنت لُقمة، مساعد ذكاء اصطناعي متخصص بالطعام والتغذية.
 
 حلل صورة الوجبة.
 
 قدّر:
-
 - اسم الوجبة
-- السعرات
+- السعرات الحرارية
 - البروتين
 - الكربوهيدرات
 - الدهون
 - الألياف
 - المكونات
-- الكميات التقريبية
+- كمية كل مكون
 - طريقة التحضير إن أمكن
 
-مهم:
-الأرقام تقديرية وليست دقيقة 100%.
+الأرقام تقديرية لأن الصورة لا تستطيع تحديد الوزن الحقيقي بدقة.
 
-أرجع JSON فقط بدون Markdown.
-
-الشكل:
+أرجع JSON فقط بهذا الشكل:
 
 {
   "title": "اسم الوجبة",
@@ -190,10 +154,11 @@ app.post(
 
                 {
                   type: "input_image",
-                  image_url: imageUrl
+                  image_url: image
                 }
 
               ]
+
             }
 
           ]
@@ -201,65 +166,25 @@ app.post(
         });
 
 
-      let text =
+      const result =
         response.output_text || "";
 
-
-      text =
-        text
-          .replace(/```json/gi, "")
-          .replace(/```/g, "")
-          .trim();
-
-
-      const first =
-        text.indexOf("{");
-
-      const last =
-        text.lastIndexOf("}");
-
-
-      if (
-        first === -1 ||
-        last === -1
-      ) {
-
-        throw new Error(
-          "الذكاء الاصطناعي لم يرجع JSON صحيح"
-        );
-
-      }
-
-
       const data =
-        JSON.parse(
-          text.substring(
-            first,
-            last + 1
-          )
-        );
+        extractJSON(result);
 
 
-      res.json({
-
-        success: true,
-
-        data
-
-      });
+      res.json(data);
 
     }
 
     catch (error) {
 
       console.error(
-        "IMAGE ERROR:",
+        "IMAGE ANALYSIS ERROR:",
         error
       );
 
       res.status(500).json({
-
-        success: false,
 
         error:
           error.message ||
@@ -286,29 +211,16 @@ app.post(
       const text =
         req.body?.text;
 
-
       if (!text) {
 
         return res.status(400).json({
-          success: false,
           error: "لم يتم إرسال النص"
         });
 
       }
 
-
-      if (!client) {
-
-        return res.status(500).json({
-          success: false,
-          error: "OPENAI_API_KEY غير موجود في Railway"
-        });
-
-      }
-
-
       const response =
-        await client.responses.create({
+        await openai.responses.create({
 
           model:
             process.env.OPENAI_MODEL ||
@@ -316,11 +228,13 @@ app.post(
 
           input: `
 
-أنت "لُقمة"، خبير تغذية.
+أنت لُقمة، مساعد متخصص بالطعام والتغذية.
 
-حلل هذه الوجبة:
+حلل الوجبة التالية:
 
 ${text}
+
+قدّر السعرات والبروتين والكارب والدهون والألياف.
 
 أرجع JSON فقط:
 
@@ -336,57 +250,27 @@ ${text}
 }
 
 `
-
         });
 
 
-      let output =
-        response.output_text || "";
-
-
-      output =
-        output
-          .replace(/```json/gi, "")
-          .replace(/```/g, "")
-          .trim();
-
-
-      const first =
-        output.indexOf("{");
-
-      const last =
-        output.lastIndexOf("}");
-
-
       const data =
-        JSON.parse(
-          output.substring(
-            first,
-            last + 1
-          )
+        extractJSON(
+          response.output_text
         );
 
 
-      res.json({
-
-        success: true,
-
-        data
-
-      });
+      res.json(data);
 
     }
 
     catch (error) {
 
       console.error(
-        "TEXT ERROR:",
+        "TEXT ANALYSIS ERROR:",
         error
       );
 
       res.status(500).json({
-
-        success: false,
 
         error:
           error.message ||
@@ -413,29 +297,16 @@ app.post(
       const ingredients =
         req.body?.ingredients;
 
-
       if (!ingredients) {
 
         return res.status(400).json({
-          success: false,
-          error: "لم يتم إرسال المكونات"
+          error: "أرسل المكونات أولاً"
         });
 
       }
-
-
-      if (!client) {
-
-        return res.status(500).json({
-          success: false,
-          error: "OPENAI_API_KEY غير موجود في Railway"
-        });
-
-      }
-
 
       const response =
-        await client.responses.create({
+        await openai.responses.create({
 
           model:
             process.env.OPENAI_MODEL ||
@@ -465,44 +336,16 @@ ${ingredients}
 }
 
 `
-
         });
 
 
-      let output =
-        response.output_text || "";
-
-
-      output =
-        output
-          .replace(/```json/gi, "")
-          .replace(/```/g, "")
-          .trim();
-
-
-      const first =
-        output.indexOf("{");
-
-      const last =
-        output.lastIndexOf("}");
-
-
       const data =
-        JSON.parse(
-          output.substring(
-            first,
-            last + 1
-          )
+        extractJSON(
+          response.output_text
         );
 
 
-      res.json({
-
-        success: true,
-
-        data
-
-      });
+      res.json(data);
 
     }
 
@@ -514,8 +357,6 @@ ${ingredients}
       );
 
       res.status(500).json({
-
-        success: false,
 
         error:
           error.message ||
@@ -530,6 +371,45 @@ ${ingredients}
 
 
 /* =========================
+   استخراج JSON
+========================= */
+
+function extractJSON(text) {
+
+  let clean =
+    String(text || "")
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .trim();
+
+  const start =
+    clean.indexOf("{");
+
+  const end =
+    clean.lastIndexOf("}");
+
+  if (
+    start === -1 ||
+    end === -1
+  ) {
+
+    throw new Error(
+      "لم يتم الحصول على JSON صحيح من الذكاء الاصطناعي"
+    );
+
+  }
+
+  return JSON.parse(
+    clean.substring(
+      start,
+      end + 1
+    )
+  );
+
+}
+
+
+/* =========================
    تشغيل السيرفر
 ========================= */
 
@@ -539,7 +419,7 @@ app.listen(
   () => {
 
     console.log(
-      `LUQMA V9 RUNNING ON PORT ${PORT}`
+      `Luqma AI Server 10.0 running on port ${PORT}`
     );
 
   }
