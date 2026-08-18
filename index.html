@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,60 +11,29 @@
 
 *{
     box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-:root{
-    --bg:#080808;
-    --card:#121211;
-    --card2:#181815;
-    --border:#292820;
-    --gold:#c8a33a;
-    --gold-dark:#8f721b;
-    --white:#fff;
-    --muted:#999;
 }
 
 body{
-    min-height:100vh;
-    background:
-        radial-gradient(
-            circle at 100% 0%,
-            #272117 0%,
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 0% 100%,
-            #19150d 0%,
-            transparent 30%
-        ),
-        var(--bg);
-
-    color:var(--white);
-    font-family:
-        Tahoma,
-        Arial,
-        sans-serif;
+    margin:0;
+    background:#080808;
+    color:#fff;
+    font-family:Tahoma,Arial,sans-serif;
 }
 
 .app{
     width:100%;
-    max-width:560px;
+    max-width:600px;
     margin:auto;
-    padding:18px 15px 45px;
+    padding:18px;
 }
 
-
-/* ===================================
-   HEADER
-=================================== */
+/* HEADER */
 
 .header{
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    margin-bottom:22px;
+    align-items:center;
+    margin-bottom:20px;
 }
 
 .brand{
@@ -73,136 +43,114 @@ body{
 }
 
 .logo{
-    width:50px;
-    height:50px;
-
+    width:52px;
+    height:52px;
     border-radius:17px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    background:
-        linear-gradient(
-            145deg,
-            #d4b34b,
-            #856b18
-        );
+    font-size:26px;
 
-    font-size:25px;
+    background:linear-gradient(
+        135deg,
+        #d5b54b,
+        #826817
+    );
 
-    box-shadow:
-        0 10px 30px
-        rgba(200,163,58,.18);
+    box-shadow:0 10px 30px rgba(200,160,50,.15);
 }
 
 .brand h1{
-    font-size:24px;
+    margin:0;
+    font-size:25px;
 }
 
 .brand p{
+    margin:4px 0 0;
     color:#888;
     font-size:11px;
-    margin-top:3px;
 }
 
-.online{
-    font-size:11px;
-    color:var(--gold);
-
-    background:#181712;
-
-    border:1px solid #302b1e;
-
+.status{
+    padding:8px 11px;
     border-radius:20px;
 
-    padding:8px 11px;
+    background:#171610;
+    border:1px solid #332e20;
+
+    color:#d0ae42;
+    font-size:11px;
 }
 
-
-/* ===================================
-   HERO
-=================================== */
+/* HERO */
 
 .hero{
-    border:1px solid var(--border);
-
-    border-radius:28px;
-
-    padding:25px 20px;
-
     background:
         linear-gradient(
             145deg,
-            rgba(36,33,24,.97),
-            rgba(16,16,15,.97)
+            #242117,
+            #11110f
         );
 
-    margin-bottom:16px;
+    border:1px solid #2b2921;
+    border-radius:27px;
+
+    padding:24px 20px;
+
+    margin-bottom:15px;
 }
 
 .hero h2{
-    font-size:28px;
-    line-height:1.45;
-    margin-bottom:8px;
+    margin:0 0 8px;
+    font-size:27px;
+    line-height:1.5;
 }
 
 .hero h2 span{
-    color:var(--gold);
+    color:#c9a83d;
 }
 
 .hero p{
+    margin:0;
     color:#aaa;
-    line-height:1.8;
     font-size:13px;
+    line-height:1.8;
 }
 
-
-/* ===================================
-   CARD
-=================================== */
+/* CARD */
 
 .card{
-    background:
-        rgba(18,18,17,.97);
-
-    border:1px solid var(--border);
-
-    border-radius:24px;
+    background:#121211;
+    border:1px solid #292820;
+    border-radius:23px;
 
     padding:18px;
-
     margin-bottom:14px;
 }
 
-.card-title{
+.title{
     display:flex;
     align-items:center;
     gap:9px;
 
+    margin-bottom:15px;
+
     font-size:16px;
     font-weight:bold;
-
-    margin-bottom:14px;
 }
 
-.number{
-    color:var(--gold);
+.num{
+    color:#c7a53c;
 }
 
-
-/* ===================================
-   UPLOAD
-=================================== */
+/* UPLOAD */
 
 .upload{
     min-height:190px;
 
-    border:
-        1px dashed #4b4127;
-
-    background:#11110f;
-
+    border:1px dashed #4a4028;
     border-radius:20px;
 
     display:flex;
@@ -215,27 +163,29 @@ body{
 
     cursor:pointer;
 
+    background:#0e0e0d;
+
     transition:.2s;
 }
 
 .upload:hover{
-    border-color:var(--gold);
-    background:#171610;
+    border-color:#c6a33a;
+    background:#15140f;
 }
 
 .camera{
-    width:66px;
-    height:66px;
+    width:65px;
+    height:65px;
 
-    border-radius:21px;
-
-    background:#242015;
+    border-radius:20px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    font-size:29px;
+    background:#242015;
+
+    font-size:28px;
 
     margin-bottom:12px;
 }
@@ -245,18 +195,15 @@ body{
 }
 
 .upload small{
-    color:#777;
     margin-top:7px;
+    color:#777;
 }
 
 #imageInput{
     display:none;
 }
 
-
-/* ===================================
-   PREVIEW
-=================================== */
+/* PREVIEW */
 
 .preview{
     display:none;
@@ -269,95 +216,76 @@ body{
 
     object-fit:cover;
 
-    border-radius:18px;
+    border-radius:17px;
 }
 
+/* BUTTON */
 
-/* ===================================
-   BUTTON
-=================================== */
-
-.main-btn{
+.button{
     width:100%;
 
-    border:0;
-
-    border-radius:17px;
+    border:none;
+    border-radius:16px;
 
     padding:16px;
+
+    margin-top:13px;
 
     background:
         linear-gradient(
             135deg,
-            #d2af3d,
-            #94751b
+            #d5b34a,
+            #91731b
         );
 
-    color:#0a0a08;
-
-    font-size:15px;
+    color:#090908;
 
     font-weight:bold;
+    font-size:15px;
 
     cursor:pointer;
-
-    margin-top:13px;
-
-    transition:.2s;
 }
 
-.main-btn:hover{
-    transform:translateY(-1px);
-}
-
-.main-btn:disabled{
-    opacity:.45;
+.button:disabled{
+    opacity:.4;
     cursor:not-allowed;
 }
 
-
-/* ===================================
-   TEXT
-=================================== */
+/* TEXT */
 
 textarea{
     width:100%;
-
     min-height:120px;
 
-    background:#0e0e0d;
+    resize:vertical;
 
-    color:#fff;
+    border-radius:17px;
 
-    border:
-        1px solid #302f29;
+    border:1px solid #302f29;
 
-    border-radius:18px;
+    background:#0d0d0c;
+
+    color:white;
 
     padding:14px;
 
     outline:none;
 
-    resize:vertical;
-
     font-family:inherit;
 }
 
 textarea:focus{
-    border-color:#a78727;
+    border-color:#a98928;
 }
 
-
-/* ===================================
-   LOADING
-=================================== */
+/* LOADING */
 
 .loading{
     display:none;
 
     text-align:center;
 
-    padding:25px;
+    padding:20px;
 
     color:#aaa;
 }
@@ -366,59 +294,91 @@ textarea:focus{
     width:38px;
     height:38px;
 
-    border:
-        3px solid #292820;
-
-    border-top-color:
-        var(--gold);
+    border:3px solid #292820;
+    border-top-color:#c9a63b;
 
     border-radius:50%;
 
-    animation:
-        spin .8s linear infinite;
+    animation:spin .8s linear infinite;
 
-    margin:
-        auto auto 12px;
+    margin:0 auto 12px;
 }
 
 @keyframes spin{
-
     to{
         transform:rotate(360deg);
     }
-
 }
 
-
-/* ===================================
-   ERROR
-=================================== */
+/* ERROR */
 
 .error{
     display:none;
 
-    background:#281616;
+    background:#241414;
 
-    border:
-        1px solid #5a2929;
+    border:1px solid #5b2b2b;
 
-    color:#e9aaaa;
+    border-radius:18px;
 
-    padding:14px;
-
-    border-radius:16px;
+    padding:15px;
 
     margin-bottom:14px;
-
-    line-height:1.7;
-
-    font-size:13px;
 }
 
+.error-title{
+    color:#ff8e8e;
 
-/* ===================================
-   RESULT
-=================================== */
+    font-weight:bold;
+
+    margin-bottom:10px;
+}
+
+.error-text{
+    color:#ddd;
+
+    font-size:12px;
+
+    line-height:1.8;
+
+    direction:ltr;
+
+    text-align:left;
+
+    word-break:break-word;
+
+    white-space:pre-wrap;
+
+    max-height:230px;
+
+    overflow:auto;
+
+    background:#100b0b;
+
+    padding:10px;
+
+    border-radius:10px;
+}
+
+.copy-error{
+    width:100%;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:11px;
+
+    margin-top:10px;
+
+    background:#30251b;
+
+    color:#d6b653;
+
+    cursor:pointer;
+}
+
+/* RESULT */
 
 .result{
     display:none;
@@ -426,14 +386,12 @@ textarea:focus{
 
 .result-head{
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
 
     gap:10px;
 
-    margin-bottom:16px;
+    margin-bottom:15px;
 }
 
 .food-name{
@@ -446,22 +404,19 @@ textarea:focus{
 
     background:#292318;
 
-    color:#d4b04a;
-
-    padding:9px 11px;
+    color:#d5b24a;
 
     border-radius:12px;
 
-    font-size:12px;
+    padding:9px 11px;
 
-    font-weight:bold;
+    font-size:12px;
 }
 
 .macros{
     display:grid;
 
-    grid-template-columns:
-        repeat(3,1fr);
+    grid-template-columns:repeat(3,1fr);
 
     gap:8px;
 }
@@ -469,14 +424,13 @@ textarea:focus{
 .macro{
     background:#151513;
 
-    border:
-        1px solid #292820;
+    border:1px solid #292820;
 
-    border-radius:16px;
-
-    padding:14px 5px;
+    border-radius:15px;
 
     text-align:center;
+
+    padding:14px 5px;
 }
 
 .macro strong{
@@ -492,14 +446,14 @@ textarea:focus{
     font-size:11px;
 }
 
-.result-section{
+.section{
     margin-top:20px;
 }
 
-.result-section h3{
+.section h3{
+    margin:0 0 10px;
+
     font-size:14px;
-    margin-bottom:10px;
-    color:#ddd;
 }
 
 .ingredients{
@@ -510,16 +464,13 @@ textarea:focus{
 
 .ingredient{
     display:flex;
-
     justify-content:space-between;
 
-    gap:10px;
-
-    padding:11px 12px;
-
-    background:#141412;
+    background:#151513;
 
     border-radius:12px;
+
+    padding:11px;
 
     color:#bbb;
 
@@ -534,7 +485,6 @@ textarea:focus{
 
 .step{
     display:flex;
-
     gap:10px;
 
     color:#aaa;
@@ -544,32 +494,25 @@ textarea:focus{
     line-height:1.7;
 }
 
-.step-num{
-    min-width:25px;
-    height:25px;
+.step-number{
+    min-width:26px;
+    height:26px;
 
     border-radius:8px;
 
-    background:#292318;
-
-    color:var(--gold);
-
     display:flex;
-
+    align-items:center;
     justify-content:center;
 
-    align-items:center;
+    background:#292318;
+
+    color:#d0ac3e;
 }
-
-
-/* ===================================
-   FOOTER
-=================================== */
 
 .footer{
     text-align:center;
 
-    color:#5f5f5f;
+    color:#555;
 
     font-size:10px;
 
@@ -584,10 +527,9 @@ textarea:focus{
 
 <div class="app">
 
-
 <!-- HEADER -->
 
-<header class="header">
+<div class="header">
 
     <div class="brand">
 
@@ -597,9 +539,7 @@ textarea:focus{
 
         <div>
 
-            <h1>
-                لُقمة
-            </h1>
+            <h1>لُقمة</h1>
 
             <p>
                 مساعدك الذكي للطعام والتغذية
@@ -609,46 +549,42 @@ textarea:focus{
 
     </div>
 
-
-    <div class="online">
-        ● Luqma AI
+    <div class="status">
+        ● متصل
     </div>
 
-</header>
+</div>
 
 
 <!-- HERO -->
 
-<section class="hero">
+<div class="hero">
 
     <h2>
-        اعرف وجبتك مع
-        <span>
-            لُقمة
-        </span>
+        حلّل وجبتك مع
+        <span>لُقمة</span>
     </h2>
 
     <p>
-        صوّر وجبتك أو اكتب مكوناتها،
-        ولُقمة تحاول تقدير السعرات
-        والبروتين والكارب والدهون
-        والمكونات وطريقة التحضير.
+        ارفع صورة وجبتك، ولُقمة تحاول
+        معرفة مكوناتها والسعرات والبروتين
+        والكارب والدهون وطريقة التحضير.
     </p>
 
-</section>
+</div>
 
 
-<!-- IMAGE -->
+<!-- IMAGE CARD -->
 
-<section class="card">
+<div class="card">
 
-    <div class="card-title">
+    <div class="title">
 
-        <span class="number">
+        <span class="num">
             01
         </span>
 
-        تحليل صورة الوجبة
+        تحليل صورة
 
     </div>
 
@@ -663,11 +599,11 @@ textarea:focus{
         </div>
 
         <b>
-            اضغط لاختيار صورة
+            اختر صورة الوجبة
         </b>
 
         <small>
-            JPG أو PNG — حتى 10MB
+            JPG / PNG حتى 10MB
         </small>
 
     </label>
@@ -687,13 +623,14 @@ textarea:focus{
 
         <img
             id="previewImage"
+            alt="preview"
         >
 
     </div>
 
 
     <button
-        class="main-btn"
+        class="button"
         id="analyzeImage"
         disabled
     >
@@ -702,32 +639,32 @@ textarea:focus{
 
     </button>
 
-</section>
+</div>
 
 
-<!-- TEXT -->
+<!-- TEXT CARD -->
 
-<section class="card">
+<div class="card">
 
-    <div class="card-title">
+    <div class="title">
 
-        <span class="number">
+        <span class="num">
             02
         </span>
 
-        تحليل وصف أو مكونات
+        تحليل المكونات
 
     </div>
 
 
     <textarea
         id="foodText"
-        placeholder="مثلاً: 200 غرام دجاج مشوي مع رز وسلطة..."
+        placeholder="مثلاً: دجاج مشوي مع رز وسلطة..."
     ></textarea>
 
 
     <button
-        class="main-btn"
+        class="button"
         id="analyzeText"
     >
 
@@ -735,7 +672,7 @@ textarea:focus{
 
     </button>
 
-</section>
+</div>
 
 
 <!-- LOADING -->
@@ -748,7 +685,7 @@ textarea:focus{
     <div class="spinner"></div>
 
     <div>
-        جاري تحليل وجبتك...
+        جاري تحليل الوجبة...
     </div>
 
 </div>
@@ -758,13 +695,33 @@ textarea:focus{
 
 <div
     class="error"
-    id="error"
-></div>
+    id="errorBox"
+>
+
+    <div class="error-title">
+        ❌ حدث خطأ
+    </div>
+
+    <div
+        class="error-text"
+        id="errorText"
+    ></div>
+
+    <button
+        class="copy-error"
+        id="copyError"
+    >
+
+        📋 نسخ الخطأ
+
+    </button>
+
+</div>
 
 
 <!-- RESULT -->
 
-<section
+<div
     class="card result"
     id="result"
 >
@@ -777,7 +734,6 @@ textarea:focus{
         >
             الوجبة
         </div>
-
 
         <div class="calories">
 
@@ -795,7 +751,6 @@ textarea:focus{
 
 
     <div class="macros">
-
 
         <div class="macro">
 
@@ -835,11 +790,10 @@ textarea:focus{
 
         </div>
 
-
     </div>
 
 
-    <div class="result-section">
+    <div class="section">
 
         <h3>
             🥘 المكونات
@@ -853,7 +807,7 @@ textarea:focus{
     </div>
 
 
-    <div class="result-section">
+    <div class="section">
 
         <h3>
             👨‍🍳 طريقة التحضير
@@ -866,13 +820,11 @@ textarea:focus{
 
     </div>
 
-</section>
+</div>
 
 
 <div class="footer">
-
-    لُقمة • AI Food Assistant
-
+    لُقمة • Luqma AI
 </div>
 
 
@@ -881,99 +833,81 @@ textarea:focus{
 
 <script>
 
-/* =========================================
-   رابط السيرفر
-========================================= */
+/* ==================================================
+   رابط Backend
+================================================== */
 
 const API_URL =
 "https://luqma-backeand-production-c2c6.up.railway.app";
 
 
-/* =========================================
+/* ==================================================
    العناصر
-========================================= */
+================================================== */
 
 const imageInput =
-document.getElementById(
-    "imageInput"
-);
+document.getElementById("imageInput");
 
 const preview =
-document.getElementById(
-    "preview"
-);
+document.getElementById("preview");
 
 const previewImage =
-document.getElementById(
-    "previewImage"
-);
+document.getElementById("previewImage");
 
 const analyzeImage =
-document.getElementById(
-    "analyzeImage"
-);
-
-const foodText =
-document.getElementById(
-    "foodText"
-);
+document.getElementById("analyzeImage");
 
 const analyzeText =
-document.getElementById(
-    "analyzeText"
-);
+document.getElementById("analyzeText");
+
+const foodText =
+document.getElementById("foodText");
 
 const loading =
-document.getElementById(
-    "loading"
-);
+document.getElementById("loading");
 
 const errorBox =
-document.getElementById(
-    "error"
-);
+document.getElementById("errorBox");
+
+const errorText =
+document.getElementById("errorText");
+
+const copyError =
+document.getElementById("copyError");
 
 const result =
-document.getElementById(
-    "result"
-);
+document.getElementById("result");
 
 
 let selectedImage = null;
 
 
-/* =========================================
+/* ==================================================
    اختيار الصورة
-========================================= */
+================================================== */
 
 imageInput.addEventListener(
     "change",
     function(){
 
         const file =
-            this.files[0];
+        this.files[0];
 
         if(!file){
             return;
         }
 
         selectedImage =
-            file;
-
+        file;
 
         previewImage.src =
-            URL.createObjectURL(
-                file
-            );
-
+        URL.createObjectURL(file);
 
         preview.style.display =
-            "block";
-
+        "block";
 
         analyzeImage.disabled =
-            false;
-
+        false;
 
         hideError();
 
@@ -981,61 +915,137 @@ imageInput.addEventListener(
 );
 
 
-/* =========================================
+/* ==================================================
    Loading
-========================================= */
+================================================== */
 
 function startLoading(){
 
     loading.style.display =
-        "block";
+    "block";
 
     result.style.display =
-        "none";
+    "none";
 
     hideError();
 
 }
 
-
 function stopLoading(){
 
     loading.style.display =
-        "none";
+    "none";
 
 }
 
 
-/* =========================================
+/* ==================================================
    Error
-========================================= */
+================================================== */
 
-function showError(
-    message
-){
+function showError(message){
 
     stopLoading();
 
-    errorBox.textContent =
-        message;
+    errorText.textContent =
+    message;
 
     errorBox.style.display =
-        "block";
+    "block";
 
 }
-
 
 function hideError(){
 
     errorBox.style.display =
-        "none";
+    "none";
 
 }
 
 
-/* =========================================
+/* ==================================================
+   نسخ الخطأ
+================================================== */
+
+copyError.addEventListener(
+    "click",
+    async function(){
+
+        try{
+
+            await navigator.clipboard.writeText(
+                errorText.textContent
+            );
+
+            copyError.textContent =
+            "✅ تم نسخ الخطأ";
+
+            setTimeout(
+                () => {
+
+                    copyError.textContent =
+                    "📋 نسخ الخطأ";
+
+                },
+                1500
+            );
+
+        }
+        catch{
+
+            alert(
+                errorText.textContent
+            );
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   فحص الاتصال بالسيرفر
+================================================== */
+
+async function checkServer(){
+
+    try{
+
+        const response =
+        await fetch(
+            API_URL + "/api/test",
+            {
+                method:"GET"
+            }
+        );
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server status: " +
+                response.status
+            );
+
+        }
+
+        return true;
+
+    }
+    catch(error){
+
+        throw new Error(
+            "تعذر الاتصال بالسيرفر.\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* ==================================================
    تحليل الصورة
-========================================= */
+================================================== */
 
 analyzeImage.addEventListener(
     "click",
@@ -1048,7 +1058,6 @@ analyzeImage.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -1057,9 +1066,19 @@ analyzeImage.addEventListener(
 
         try{
 
-            const formData =
-                new FormData();
+            /* ------------------------------
+               فحص السيرفر
+            ------------------------------ */
 
+            await checkServer();
+
+
+            /* ------------------------------
+               تجهيز الصورة
+            ------------------------------ */
+
+            const formData =
+            new FormData();
 
             formData.append(
                 "image",
@@ -1067,22 +1086,24 @@ analyzeImage.addEventListener(
             );
 
 
+            /* ------------------------------
+               إرسال الصورة
+            ------------------------------ */
+
             const response =
-                await fetch(
-                    API_URL +
-                    "/api/analyze-image",
-                    {
-                        method:
-                            "POST",
+            await fetch(
+                API_URL +
+                "/api/analyze-image",
+                {
+                    method:"POST",
 
-                        body:
-                            formData
-                    }
-                );
+                    body:formData
+                }
+            );
 
 
-            const text =
-                await response.text();
+            const responseText =
+            await response.text();
 
 
             let data;
@@ -1091,20 +1112,16 @@ analyzeImage.addEventListener(
             try{
 
                 data =
-                    JSON.parse(
-                        text
-                    );
+                JSON.parse(
+                    responseText
+                );
 
             }
-
             catch{
 
                 throw new Error(
-                    "السيرفر أرسل استجابة غير مفهومة: " +
-                    text.substring(
-                        0,
-                        200
-                    )
+                    "السيرفر لم يرجع JSON.\n\n" +
+                    responseText
                 );
 
             }
@@ -1113,8 +1130,23 @@ analyzeImage.addEventListener(
             if(!response.ok){
 
                 throw new Error(
+                    "HTTP " +
+                    response.status +
+                    "\n\n" +
+                    (
+                        data.error ||
+                        JSON.stringify(data)
+                    )
+                );
+
+            }
+
+
+            if(data.success === false){
+
+                throw new Error(
                     data.error ||
-                    "فشل تحليل الصورة"
+                    "فشل التحليل"
                 );
 
             }
@@ -1125,20 +1157,18 @@ analyzeImage.addEventListener(
                 data
             );
 
-
         }
-
         catch(error){
 
             console.error(
-                "Luqma:",
+                "LUQMA IMAGE ERROR:",
                 error
             );
 
 
             showError(
                 error.message ||
-                "Failed to fetch"
+                String(error)
             );
 
         }
@@ -1147,22 +1177,22 @@ analyzeImage.addEventListener(
 );
 
 
-/* =========================================
+/* ==================================================
    تحليل النص
-========================================= */
+================================================== */
 
 analyzeText.addEventListener(
     "click",
     async function(){
 
         const text =
-            foodText.value.trim();
+        foodText.value.trim();
 
 
         if(!text){
 
             showError(
-                "اكتب وصف الوجبة أولاً."
+                "اكتب مكونات أو وصف الوجبة أولاً."
             );
 
             return;
@@ -1175,32 +1205,31 @@ analyzeText.addEventListener(
 
         try{
 
+            await checkServer();
+
+
             const response =
-                await fetch(
-                    API_URL +
-                    "/api/analyze-text",
-                    {
+            await fetch(
+                API_URL +
+                "/api/analyze-text",
+                {
+                    method:"POST",
 
-                        method:
-                            "POST",
+                    headers:{
+                        "Content-Type":
+                        "application/json"
+                    },
 
-                        headers:{
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify({
-                                text:
-                                    text
-                            })
-
-                    }
-                );
+                    body:
+                    JSON.stringify({
+                        text:text
+                    })
+                }
+            );
 
 
             const responseText =
-                await response.text();
+            await response.text();
 
 
             let data;
@@ -1209,16 +1238,16 @@ analyzeText.addEventListener(
             try{
 
                 data =
-                    JSON.parse(
-                        responseText
-                    );
+                JSON.parse(
+                    responseText
+                );
 
             }
-
             catch{
 
                 throw new Error(
-                    "السيرفر أرسل استجابة غير مفهومة"
+                    "السيرفر لم يرجع JSON.\n\n" +
+                    responseText
                 );
 
             }
@@ -1227,8 +1256,13 @@ analyzeText.addEventListener(
             if(!response.ok){
 
                 throw new Error(
-                    data.error ||
-                    "فشل تحليل النص"
+                    "HTTP " +
+                    response.status +
+                    "\n\n" +
+                    (
+                        data.error ||
+                        JSON.stringify(data)
+                    )
                 );
 
             }
@@ -1239,19 +1273,18 @@ analyzeText.addEventListener(
                 data
             );
 
-
         }
-
         catch(error){
 
             console.error(
+                "LUQMA TEXT ERROR:",
                 error
             );
 
 
             showError(
                 error.message ||
-                "Failed to fetch"
+                String(error)
             );
 
         }
@@ -1260,71 +1293,71 @@ analyzeText.addEventListener(
 );
 
 
-/* =========================================
+/* ==================================================
    عرض النتيجة
-========================================= */
+================================================== */
 
-function displayResult(
-    data
-){
+function displayResult(data){
 
     stopLoading();
 
 
     result.style.display =
-        "block";
+    "block";
 
 
     document.getElementById(
         "foodName"
     ).textContent =
-        data.title ||
-        "وجبة";
+    data.title ||
+    "وجبة";
 
 
     document.getElementById(
         "calories"
     ).textContent =
-        data.calories ??
-        0;
+    data.calories ??
+    0;
 
 
     document.getElementById(
         "protein"
     ).textContent =
-        (data.protein ??
-        data.macros?.protein ??
-        0) + "g";
+    (
+        data.protein ??
+        0
+    ) + "g";
 
 
     document.getElementById(
         "carbs"
     ).textContent =
-        (data.carbs ??
-        data.macros?.carbs ??
-        0) + "g";
+    (
+        data.carbs ??
+        0
+    ) + "g";
 
 
     document.getElementById(
         "fat"
     ).textContent =
-        (data.fat ??
-        data.macros?.fat ??
-        0) + "g";
+    (
+        data.fat ??
+        0
+    ) + "g";
 
 
-    /* =================================
+    /* ------------------------------
        المكونات
-    ================================= */
+    ------------------------------ */
 
     const ingredients =
-        document.getElementById(
-            "ingredients"
-        );
-
+    document.getElementById(
+        "ingredients"
+    );
 
     ingredients.innerHTML =
-        "";
+    "";
 
 
     if(
@@ -1337,46 +1370,41 @@ function displayResult(
             item => {
 
                 const row =
-                    document.createElement(
-                        "div"
-                    );
-
+                document.createElement(
+                    "div"
+                );
 
                 row.className =
-                    "ingredient";
+                "ingredient";
 
 
                 const name =
-                    document.createElement(
-                        "span"
-                    );
-
+                document.createElement(
+                    "span"
+                );
 
                 name.textContent =
-                    item.name ||
-                    "مكون";
+                item.name ||
+                "مكون";
 
 
                 const amount =
-                    document.createElement(
-                        "span"
-                    );
-
+                document.createElement(
+                    "span"
+                );
 
                 amount.textContent =
-                    item.amount ||
-                    "";
+                item.amount ||
+                "";
 
 
                 row.appendChild(
                     name
                 );
 
-
                 row.appendChild(
                     amount
                 );
-
 
                 ingredients.appendChild(
                     row
@@ -1388,18 +1416,17 @@ function displayResult(
     }
 
 
-    /* =================================
-       خطوات التحضير
-    ================================= */
+    /* ------------------------------
+       الخطوات
+    ------------------------------ */
 
     const steps =
-        document.getElementById(
-            "steps"
-        );
-
+    document.getElementById(
+        "steps"
+    );
 
     steps.innerHTML =
-        "";
+    "";
 
 
     if(
@@ -1415,48 +1442,42 @@ function displayResult(
             ) => {
 
                 const row =
-                    document.createElement(
-                        "div"
-                    );
-
+                document.createElement(
+                    "div"
+                );
 
                 row.className =
-                    "step";
+                "step";
 
 
                 const number =
-                    document.createElement(
-                        "div"
-                    );
-
+                document.createElement(
+                    "div"
+                );
 
                 number.className =
-                    "step-num";
-
+                "step-number";
 
                 number.textContent =
-                    index + 1;
+                index + 1;
 
 
                 const text =
-                    document.createElement(
-                        "div"
-                    );
-
+                document.createElement(
+                    "div"
+                );
 
                 text.textContent =
-                    step;
+                step;
 
 
                 row.appendChild(
                     number
                 );
 
-
                 row.appendChild(
                     text
                 );
-
 
                 steps.appendChild(
                     row
@@ -1469,11 +1490,8 @@ function displayResult(
 
 
     result.scrollIntoView({
-        behavior:
-            "smooth",
-
-        block:
-            "start"
+        behavior:"smooth",
+        block:"start"
     });
 
 }
