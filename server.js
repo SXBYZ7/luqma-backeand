@@ -2,97 +2,237 @@ const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
 const OpenAI = require("openai");
+const path = require("path");
 
 const app = express();
 
 const PORT = process.env.PORT || 8080;
 
+
+/* =========================================
+   Middleware
+========================================= */
+
 app.use(cors());
 
-app.use(express.json({
-  limit: "10mb"
-}));
+app.use(
+  express.json({
+    limit: "10mb"
+  })
+);
+
+
+/* =========================================
+   عرض ملفات الموقع
+========================================= */
+
+app.use(
+  express.static(
+    path.join(__dirname)
+  )
+);
+
+
+/* =========================================
+   رفع الصور
+========================================= */
 
 const upload = multer({
   storage: multer.memoryStorage(),
+
   limits: {
     fileSize: 10 * 1024 * 1024
   }
 });
+
+
+/* =========================================
+   OpenAI
+========================================= */
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
 
-/* =========================
+/* =========================================
    الصفحة الرئيسية
-========================= */
+========================================= */
 
 app.get("/", (req, res) => {
 
-  res.json({
-    app: "لُقمة",
-    status: "online",
-    version: "10.0",
-    service: "AI Food Analysis"
-  });
+  res.sendFile(
+    path.join(
+      __dirname,
+      "index.html"
+    )
+  );
 
 });
 
 
-/* =========================
+/* =========================================
    Health
-========================= */
+========================================= */
 
 app.get("/health", (req, res) => {
 
   res.json({
+
     status: "online",
+
     app: "Luqma",
-    version: "10.0",
-    openai: !!process.env.OPENAI_API_KEY
+
+    version: "11.0",
+
+    openai:
+      !!process.env.OPENAI_API_KEY
+
   });
 
 });
 
 
-/* =========================
-   تحليل صورة
-========================= */
+/* =========================================
+   اختبار API
+========================================= */
+
+app.get("/api/test", (req, res) => {
+
+  res.json({
+
+    success: true,
+
+    app: "Luqma",
+
+    message:
+      "Luqma API يعمل بنجاح 🚀",
+
+    version: "11.0"
+
+  });
+
+});
+
+
+/* =========================================
+   دالة استخراج JSON
+========================================= */
+
+function extractJSON(text) {
+
+  let clean =
+    String(text || "")
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .trim();
+
+
+  const start =
+    clean.indexOf("{");
+
+
+  const end =
+    clean.lastIndexOf("}");
+
+
+  if (
+    start === -1 ||
+    end === -1
+  ) {
+
+    throw new Error(
+      "الذكاء الاصطناعي لم يرجع JSON صحيح"
+    );
+
+  }
+
+
+  clean =
+    clean.substring(
+      start,
+      end + 1
+    );
+
+
+  return JSON.parse(clean);
+
+}
+
+
+/* =========================================
+   تحليل صورة الوجبة
+========================================= */
 
 app.post(
   "/api/analyze-image",
+
   upload.single("image"),
+
   async (req, res) => {
 
     try {
 
+      /* -------------------------
+         التحقق من الصورة
+      ------------------------- */
+
       if (!req.file) {
 
         return res.status(400).json({
-          error: "لم يتم اختيار صورة"
+
+          success: false,
+
+          error:
+            "لم يتم إرسال صورة"
+
         });
 
       }
 
-      if (!process.env.OPENAI_API_KEY) {
+
+      /* -------------------------
+         التحقق من المفتاح
+      ------------------------- */
+
+      if (
+        !process.env.OPENAI_API_KEY
+      ) {
 
         return res.status(500).json({
-          error: "مفتاح OpenAI غير موجود"
+
+          success: false,
+
+          error:
+            "OPENAI_API_KEY غير موجود في Railway"
+
         });
 
       }
 
+
+      /* -------------------------
+         تحويل الصورة
+      ------------------------- */
+
       const base64 =
-        req.file.buffer.toString("base64");
+        req.file.buffer.toString(
+          "base64"
+        );
+
 
       const mime =
-        req.file.mimetype || "image/jpeg";
+        req.file.mimetype ||
+        "image/jpeg";
 
-      const image =
+
+      const imageUrl =
         `data:${mime};base64,${base64}`;
 
+
+      /* -------------------------
+         الذكاء الاصطناعي
+      ------------------------- */
 
       const response =
         await openai.responses.create({
@@ -104,32 +244,44 @@ app.post(
           input: [
 
             {
+
               role: "user",
 
               content: [
 
                 {
-                  type: "input_text",
+
+                  type:
+                    "input_text",
 
                   text: `
-أنت لُقمة، مساعد ذكاء اصطناعي متخصص بالطعام والتغذية.
 
-حلل صورة الوجبة.
+أنت "لُقمة"، مساعد ذكاء اصطناعي متخصص بالطعام والتغذية.
 
-قدّر:
-- اسم الوجبة
-- السعرات الحرارية
-- البروتين
-- الكربوهيدرات
-- الدهون
-- الألياف
-- المكونات
-- كمية كل مكون
-- طريقة التحضير إن أمكن
+حلل صورة الوجبة المرفقة.
 
-الأرقام تقديرية لأن الصورة لا تستطيع تحديد الوزن الحقيقي بدقة.
+حاول تحديد:
 
-أرجع JSON فقط بهذا الشكل:
+1. اسم الوجبة
+2. الأطعمة الموجودة
+3. الكمية التقريبية
+4. السعرات الحرارية
+5. البروتين
+6. الكربوهيدرات
+7. الدهون
+8. الألياف
+9. المكونات
+10. خطوات التحضير إذا أمكن
+
+مهم جداً:
+
+الصورة لا تستطيع تحديد الوزن الحقيقي بدقة.
+
+لذلك استخدم تقديرات معقولة ولا تدّعي أن الأرقام دقيقة 100%.
+
+أرجع JSON فقط.
+
+استخدم هذا الشكل:
 
 {
   "title": "اسم الوجبة",
@@ -149,12 +301,21 @@ app.post(
     "الخطوة الثانية"
   ]
 }
+
+إذا كان شيء غير واضح في الصورة، اعتبره تقديراً.
+
 `
+
                 },
 
                 {
-                  type: "input_image",
-                  image_url: image
+
+                  type:
+                    "input_image",
+
+                  image_url:
+                    imageUrl
+
                 }
 
               ]
@@ -166,25 +327,43 @@ app.post(
         });
 
 
-      const result =
+      /* -------------------------
+         قراءة النتيجة
+      ------------------------- */
+
+      const output =
         response.output_text || "";
 
+
       const data =
-        extractJSON(result);
+        extractJSON(output);
 
 
-      res.json(data);
+      /* -------------------------
+         إرسال النتيجة
+      ------------------------- */
+
+      res.json({
+
+        success: true,
+
+        data: data
+
+      });
 
     }
 
     catch (error) {
 
       console.error(
-        "IMAGE ANALYSIS ERROR:",
+        "IMAGE ERROR:",
         error
       );
 
+
       res.status(500).json({
+
+        success: false,
 
         error:
           error.message ||
@@ -195,15 +374,17 @@ app.post(
     }
 
   }
+
 );
 
 
-/* =========================
+/* =========================================
    تحليل النص
-========================= */
+========================================= */
 
 app.post(
   "/api/analyze-text",
+
   async (req, res) => {
 
     try {
@@ -211,13 +392,36 @@ app.post(
       const text =
         req.body?.text;
 
+
       if (!text) {
 
         return res.status(400).json({
-          error: "لم يتم إرسال النص"
+
+          success: false,
+
+          error:
+            "لم يتم إرسال النص"
+
         });
 
       }
+
+
+      if (
+        !process.env.OPENAI_API_KEY
+      ) {
+
+        return res.status(500).json({
+
+          success: false,
+
+          error:
+            "OPENAI_API_KEY غير موجود"
+
+        });
+
+      }
+
 
       const response =
         await openai.responses.create({
@@ -228,13 +432,13 @@ app.post(
 
           input: `
 
-أنت لُقمة، مساعد متخصص بالطعام والتغذية.
+أنت "لُقمة"، مساعد متخصص بالطعام والتغذية.
 
-حلل الوجبة التالية:
+حلل وصف الوجبة التالي:
 
 ${text}
 
-قدّر السعرات والبروتين والكارب والدهون والألياف.
+احسب تقديراً للسعرات والقيم الغذائية.
 
 أرجع JSON فقط:
 
@@ -250,6 +454,7 @@ ${text}
 }
 
 `
+
         });
 
 
@@ -259,18 +464,27 @@ ${text}
         );
 
 
-      res.json(data);
+      res.json({
+
+        success: true,
+
+        data: data
+
+      });
 
     }
 
     catch (error) {
 
       console.error(
-        "TEXT ANALYSIS ERROR:",
+        "TEXT ERROR:",
         error
       );
 
+
       res.status(500).json({
+
+        success: false,
 
         error:
           error.message ||
@@ -281,15 +495,17 @@ ${text}
     }
 
   }
+
 );
 
 
-/* =========================
+/* =========================================
    إنشاء وصفة
-========================= */
+========================================= */
 
 app.post(
   "/api/recipe",
+
   async (req, res) => {
 
     try {
@@ -297,13 +513,20 @@ app.post(
       const ingredients =
         req.body?.ingredients;
 
+
       if (!ingredients) {
 
         return res.status(400).json({
-          error: "أرسل المكونات أولاً"
+
+          success: false,
+
+          error:
+            "لم يتم إرسال المكونات"
+
         });
 
       }
+
 
       const response =
         await openai.responses.create({
@@ -314,13 +537,15 @@ app.post(
 
           input: `
 
-أنت شيف وخبير تغذية في تطبيق لُقمة.
+أنت شيف وخبير تغذية في تطبيق "لُقمة".
 
 المكونات:
 
 ${ingredients}
 
-أنشئ وصفة مناسبة.
+أنشئ وصفة مناسبة من هذه المكونات.
+
+احسب السعرات والقيم الغذائية تقريبياً.
 
 أرجع JSON فقط:
 
@@ -336,6 +561,7 @@ ${ingredients}
 }
 
 `
+
         });
 
 
@@ -345,7 +571,13 @@ ${ingredients}
         );
 
 
-      res.json(data);
+      res.json({
+
+        success: true,
+
+        data: data
+
+      });
 
     }
 
@@ -356,7 +588,10 @@ ${ingredients}
         error
       );
 
+
       res.status(500).json({
+
+        success: false,
 
         error:
           error.message ||
@@ -367,51 +602,13 @@ ${ingredients}
     }
 
   }
+
 );
 
 
-/* =========================
-   استخراج JSON
-========================= */
-
-function extractJSON(text) {
-
-  let clean =
-    String(text || "")
-      .replace(/```json/gi, "")
-      .replace(/```/g, "")
-      .trim();
-
-  const start =
-    clean.indexOf("{");
-
-  const end =
-    clean.lastIndexOf("}");
-
-  if (
-    start === -1 ||
-    end === -1
-  ) {
-
-    throw new Error(
-      "لم يتم الحصول على JSON صحيح من الذكاء الاصطناعي"
-    );
-
-  }
-
-  return JSON.parse(
-    clean.substring(
-      start,
-      end + 1
-    )
-  );
-
-}
-
-
-/* =========================
+/* =========================================
    تشغيل السيرفر
-========================= */
+========================================= */
 
 app.listen(
   PORT,
@@ -419,7 +616,7 @@ app.listen(
   () => {
 
     console.log(
-      `Luqma AI Server 10.0 running on port ${PORT}`
+      `Luqma V11 running on port ${PORT}`
     );
 
   }
