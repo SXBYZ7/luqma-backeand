@@ -7,6 +7,7 @@
 <title>لُقمة | Luqma AI</title>
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -19,28 +20,44 @@
     --card2:#181815;
     --border:#292820;
     --gold:#c8a33a;
-    --gold2:#92751d;
-    --text:#fff;
+    --gold-dark:#8f721b;
+    --white:#fff;
     --muted:#999;
 }
 
 body{
-    background:
-        radial-gradient(circle at 100% 0%,#252015 0%,transparent 35%),
-        radial-gradient(circle at 0% 100%,#17140d 0%,transparent 30%),
-        var(--bg);
-    color:var(--text);
-    font-family:Tahoma,Arial,sans-serif;
     min-height:100vh;
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            #272117 0%,
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 0% 100%,
+            #19150d 0%,
+            transparent 30%
+        ),
+        var(--bg);
+
+    color:var(--white);
+    font-family:
+        Tahoma,
+        Arial,
+        sans-serif;
 }
 
 .app{
+    width:100%;
     max-width:560px;
     margin:auto;
     padding:18px 15px 45px;
 }
 
-/* HEADER */
+
+/* ===================================
+   HEADER
+=================================== */
 
 .header{
     display:flex;
@@ -58,13 +75,25 @@ body{
 .logo{
     width:50px;
     height:50px;
+
     border-radius:17px;
+
     display:flex;
     align-items:center;
     justify-content:center;
-    background:linear-gradient(145deg,#d4b34b,#856b18);
+
+    background:
+        linear-gradient(
+            145deg,
+            #d4b34b,
+            #856b18
+        );
+
     font-size:25px;
-    box-shadow:0 10px 30px rgba(200,163,58,.16);
+
+    box-shadow:
+        0 10px 30px
+        rgba(200,163,58,.18);
 }
 
 .brand h1{
@@ -79,27 +108,42 @@ body{
 
 .online{
     font-size:11px;
-    color:#c8a33a;
+    color:var(--gold);
+
     background:#181712;
+
     border:1px solid #302b1e;
+
     border-radius:20px;
+
     padding:8px 11px;
 }
 
-/* HERO */
+
+/* ===================================
+   HERO
+=================================== */
 
 .hero{
     border:1px solid var(--border);
+
     border-radius:28px;
-    padding:24px 20px;
+
+    padding:25px 20px;
+
     background:
-        linear-gradient(145deg,rgba(34,31,22,.96),rgba(16,16,15,.96));
+        linear-gradient(
+            145deg,
+            rgba(36,33,24,.97),
+            rgba(16,16,15,.97)
+        );
+
     margin-bottom:16px;
 }
 
 .hero h2{
     font-size:28px;
-    line-height:1.4;
+    line-height:1.45;
     margin-bottom:8px;
 }
 
@@ -113,13 +157,21 @@ body{
     font-size:13px;
 }
 
-/* CARDS */
+
+/* ===================================
+   CARD
+=================================== */
 
 .card{
-    background:rgba(18,18,17,.96);
+    background:
+        rgba(18,18,17,.97);
+
     border:1px solid var(--border);
+
     border-radius:24px;
+
     padding:18px;
+
     margin-bottom:14px;
 }
 
@@ -127,8 +179,10 @@ body{
     display:flex;
     align-items:center;
     gap:9px;
+
     font-size:16px;
     font-weight:bold;
+
     margin-bottom:14px;
 }
 
@@ -136,19 +190,31 @@ body{
     color:var(--gold);
 }
 
-/* UPLOAD */
+
+/* ===================================
+   UPLOAD
+=================================== */
 
 .upload{
     min-height:190px;
-    border:1px dashed #4b4127;
+
+    border:
+        1px dashed #4b4127;
+
     background:#11110f;
+
     border-radius:20px;
+
     display:flex;
     flex-direction:column;
+
     justify-content:center;
     align-items:center;
+
     text-align:center;
+
     cursor:pointer;
+
     transition:.2s;
 }
 
@@ -160,12 +226,17 @@ body{
 .camera{
     width:66px;
     height:66px;
+
     border-radius:21px;
+
     background:#242015;
+
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
+
     font-size:29px;
+
     margin-bottom:12px;
 }
 
@@ -182,7 +253,10 @@ body{
     display:none;
 }
 
-/* PREVIEW */
+
+/* ===================================
+   PREVIEW
+=================================== */
 
 .preview{
     display:none;
@@ -192,27 +266,43 @@ body{
 .preview img{
     width:100%;
     max-height:300px;
+
     object-fit:cover;
+
     border-radius:18px;
 }
 
-/* BUTTONS */
 
-button{
-    font-family:inherit;
-}
+/* ===================================
+   BUTTON
+=================================== */
 
 .main-btn{
     width:100%;
+
     border:0;
+
     border-radius:17px;
+
     padding:16px;
-    background:linear-gradient(135deg,#d2af3d,#94751b);
+
+    background:
+        linear-gradient(
+            135deg,
+            #d2af3d,
+            #94751b
+        );
+
     color:#0a0a08;
+
     font-size:15px;
+
     font-weight:bold;
+
     cursor:pointer;
+
     margin-top:13px;
+
     transition:.2s;
 }
 
@@ -225,18 +315,31 @@ button{
     cursor:not-allowed;
 }
 
-/* TEXT */
+
+/* ===================================
+   TEXT
+=================================== */
 
 textarea{
     width:100%;
+
     min-height:120px;
+
     background:#0e0e0d;
+
     color:#fff;
-    border:1px solid #302f29;
+
+    border:
+        1px solid #302f29;
+
     border-radius:18px;
+
     padding:14px;
+
     outline:none;
+
     resize:vertical;
+
     font-family:inherit;
 }
 
@@ -244,46 +347,78 @@ textarea:focus{
     border-color:#a78727;
 }
 
-/* LOADING */
+
+/* ===================================
+   LOADING
+=================================== */
 
 .loading{
     display:none;
+
     text-align:center;
+
     padding:25px;
+
     color:#aaa;
 }
 
 .spinner{
     width:38px;
     height:38px;
-    border:3px solid #292820;
-    border-top-color:var(--gold);
+
+    border:
+        3px solid #292820;
+
+    border-top-color:
+        var(--gold);
+
     border-radius:50%;
-    animation:spin .8s linear infinite;
-    margin:auto auto 12px;
+
+    animation:
+        spin .8s linear infinite;
+
+    margin:
+        auto auto 12px;
 }
 
 @keyframes spin{
+
     to{
         transform:rotate(360deg);
     }
+
 }
 
-/* ERROR */
+
+/* ===================================
+   ERROR
+=================================== */
 
 .error{
     display:none;
+
     background:#281616;
-    border:1px solid #5a2929;
+
+    border:
+        1px solid #5a2929;
+
     color:#e9aaaa;
+
     padding:14px;
+
     border-radius:16px;
+
     margin-bottom:14px;
+
     line-height:1.7;
+
     font-size:13px;
 }
 
-/* RESULT */
+
+/* ===================================
+   RESULT
+=================================== */
 
 .result{
     display:none;
@@ -291,9 +426,13 @@ textarea:focus{
 
 .result-head{
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     gap:10px;
+
     margin-bottom:16px;
 }
 
@@ -304,31 +443,47 @@ textarea:focus{
 
 .calories{
     white-space:nowrap;
+
     background:#292318;
+
     color:#d4b04a;
+
     padding:9px 11px;
+
     border-radius:12px;
+
     font-size:12px;
+
     font-weight:bold;
 }
 
 .macros{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap:8px;
 }
 
 .macro{
     background:#151513;
-    border:1px solid #292820;
+
+    border:
+        1px solid #292820;
+
     border-radius:16px;
+
     padding:14px 5px;
+
     text-align:center;
 }
 
 .macro strong{
     display:block;
+
     font-size:18px;
+
     margin-bottom:5px;
 }
 
@@ -355,12 +510,19 @@ textarea:focus{
 
 .ingredient{
     display:flex;
+
     justify-content:space-between;
+
     gap:10px;
+
     padding:11px 12px;
+
     background:#141412;
+
     border-radius:12px;
+
     color:#bbb;
+
     font-size:12px;
 }
 
@@ -372,618 +534,797 @@ textarea:focus{
 
 .step{
     display:flex;
+
     gap:10px;
+
     color:#aaa;
+
     font-size:12px;
+
     line-height:1.7;
 }
 
 .step-num{
     min-width:25px;
     height:25px;
+
     border-radius:8px;
+
     background:#292318;
+
     color:var(--gold);
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
 }
 
-/* FOOTER */
+
+/* ===================================
+   FOOTER
+=================================== */
 
 .footer{
     text-align:center;
+
     color:#5f5f5f;
+
     font-size:10px;
+
     margin-top:22px;
 }
+
 </style>
 </head>
+
 
 <body>
 
 <div class="app">
 
-    <header class="header">
 
-        <div class="brand">
+<!-- HEADER -->
 
-            <div class="logo">🍽️</div>
+<header class="header">
 
-            <div>
-                <h1>لُقمة</h1>
-                <p>مساعدك الذكي للطعام والتغذية</p>
-            </div>
+    <div class="brand">
 
+        <div class="logo">
+            🍽️
         </div>
-
-        <div class="online">
-            ● Luqma AI
-        </div>
-
-    </header>
-
-
-    <section class="hero">
-
-        <h2>
-            اعرف وجبتك مع
-            <span>لُقمة</span>
-        </h2>
-
-        <p>
-            ارفع صورة وجبتك أو اكتب مكوناتها،
-            ولُقمة تحاول تقدير السعرات والقيم الغذائية
-            والمكونات وطريقة التحضير.
-        </p>
-
-    </section>
-
-
-    <!-- IMAGE -->
-
-    <section class="card">
-
-        <div class="card-title">
-            <span class="number">01</span>
-            تحليل صورة الوجبة
-        </div>
-
-        <label
-            class="upload"
-            for="imageInput"
-        >
-
-            <div class="camera">
-                📷
-            </div>
-
-            <b>
-                اضغط لاختيار صورة
-            </b>
-
-            <small>
-                JPG أو PNG — الحد الأقصى 10MB
-            </small>
-
-        </label>
-
-        <input
-            id="imageInput"
-            type="file"
-            accept="image/*"
-        >
-
-        <div
-            class="preview"
-            id="preview"
-        >
-            <img id="previewImage">
-        </div>
-
-        <button
-            class="main-btn"
-            id="analyzeImage"
-            disabled
-        >
-            🔍 تحليل الوجبة
-        </button>
-
-    </section>
-
-
-    <!-- TEXT -->
-
-    <section class="card">
-
-        <div class="card-title">
-            <span class="number">02</span>
-            تحليل وصف أو مكونات
-        </div>
-
-        <textarea
-            id="foodText"
-            placeholder="مثلاً: 200 غرام دجاج مشوي، رز، سلطة ولبن..."
-        ></textarea>
-
-        <button
-            class="main-btn"
-            id="analyzeText"
-        >
-            ✨ تحليل النص
-        </button>
-
-    </section>
-
-
-    <div
-        class="loading"
-        id="loading"
-    >
-
-        <div class="spinner"></div>
 
         <div>
-            جاري تحليل وجبتك...
+
+            <h1>
+                لُقمة
+            </h1>
+
+            <p>
+                مساعدك الذكي للطعام والتغذية
+            </p>
+
         </div>
 
     </div>
+
+
+    <div class="online">
+        ● Luqma AI
+    </div>
+
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <h2>
+        اعرف وجبتك مع
+        <span>
+            لُقمة
+        </span>
+    </h2>
+
+    <p>
+        صوّر وجبتك أو اكتب مكوناتها،
+        ولُقمة تحاول تقدير السعرات
+        والبروتين والكارب والدهون
+        والمكونات وطريقة التحضير.
+    </p>
+
+</section>
+
+
+<!-- IMAGE -->
+
+<section class="card">
+
+    <div class="card-title">
+
+        <span class="number">
+            01
+        </span>
+
+        تحليل صورة الوجبة
+
+    </div>
+
+
+    <label
+        class="upload"
+        for="imageInput"
+    >
+
+        <div class="camera">
+            📷
+        </div>
+
+        <b>
+            اضغط لاختيار صورة
+        </b>
+
+        <small>
+            JPG أو PNG — حتى 10MB
+        </small>
+
+    </label>
+
+
+    <input
+        id="imageInput"
+        type="file"
+        accept="image/*"
+    >
 
 
     <div
-        class="error"
-        id="error"
-    ></div>
-
-
-    <!-- RESULT -->
-
-    <section
-        class="card result"
-        id="result"
+        class="preview"
+        id="preview"
     >
 
-        <div class="result-head">
+        <img
+            id="previewImage"
+        >
 
-            <div
-                class="food-name"
-                id="foodName"
-            >
-                الوجبة
-            </div>
-
-            <div class="calories">
-                🔥
-                <span id="calories">
-                    0
-                </span>
-                kcal
-            </div>
-
-        </div>
-
-
-        <div class="macros">
-
-            <div class="macro">
-
-                <strong id="protein">
-                    0g
-                </strong>
-
-                <span>
-                    بروتين
-                </span>
-
-            </div>
-
-
-            <div class="macro">
-
-                <strong id="carbs">
-                    0g
-                </strong>
-
-                <span>
-                    كارب
-                </span>
-
-            </div>
-
-
-            <div class="macro">
-
-                <strong id="fat">
-                    0g
-                </strong>
-
-                <span>
-                    دهون
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="result-section">
-
-            <h3>
-                🥘 المكونات
-            </h3>
-
-            <div
-                class="ingredients"
-                id="ingredients"
-            ></div>
-
-        </div>
-
-
-        <div class="result-section">
-
-            <h3>
-                👨‍🍳 طريقة التحضير
-            </h3>
-
-            <div
-                class="steps"
-                id="steps"
-            ></div>
-
-        </div>
-
-    </section>
-
-
-    <div class="footer">
-        لُقمة • تحليل غذائي تقريبي بالذكاء الاصطناعي
     </div>
+
+
+    <button
+        class="main-btn"
+        id="analyzeImage"
+        disabled
+    >
+
+        🔍 تحليل الوجبة
+
+    </button>
+
+</section>
+
+
+<!-- TEXT -->
+
+<section class="card">
+
+    <div class="card-title">
+
+        <span class="number">
+            02
+        </span>
+
+        تحليل وصف أو مكونات
+
+    </div>
+
+
+    <textarea
+        id="foodText"
+        placeholder="مثلاً: 200 غرام دجاج مشوي مع رز وسلطة..."
+    ></textarea>
+
+
+    <button
+        class="main-btn"
+        id="analyzeText"
+    >
+
+        ✨ تحليل النص
+
+    </button>
+
+</section>
+
+
+<!-- LOADING -->
+
+<div
+    class="loading"
+    id="loading"
+>
+
+    <div class="spinner"></div>
+
+    <div>
+        جاري تحليل وجبتك...
+    </div>
+
+</div>
+
+
+<!-- ERROR -->
+
+<div
+    class="error"
+    id="error"
+></div>
+
+
+<!-- RESULT -->
+
+<section
+    class="card result"
+    id="result"
+>
+
+    <div class="result-head">
+
+        <div
+            class="food-name"
+            id="foodName"
+        >
+            الوجبة
+        </div>
+
+
+        <div class="calories">
+
+            🔥
+
+            <span id="calories">
+                0
+            </span>
+
+            kcal
+
+        </div>
+
+    </div>
+
+
+    <div class="macros">
+
+
+        <div class="macro">
+
+            <strong id="protein">
+                0g
+            </strong>
+
+            <span>
+                بروتين
+            </span>
+
+        </div>
+
+
+        <div class="macro">
+
+            <strong id="carbs">
+                0g
+            </strong>
+
+            <span>
+                كارب
+            </span>
+
+        </div>
+
+
+        <div class="macro">
+
+            <strong id="fat">
+                0g
+            </strong>
+
+            <span>
+                دهون
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="result-section">
+
+        <h3>
+            🥘 المكونات
+        </h3>
+
+        <div
+            class="ingredients"
+            id="ingredients"
+        ></div>
+
+    </div>
+
+
+    <div class="result-section">
+
+        <h3>
+            👨‍🍳 طريقة التحضير
+        </h3>
+
+        <div
+            class="steps"
+            id="steps"
+        ></div>
+
+    </div>
+
+</section>
+
+
+<div class="footer">
+
+    لُقمة • AI Food Assistant
+
+</div>
+
 
 </div>
 
 
 <script>
 
-/*
-==================================================
-Luqma Backend
-==================================================
-*/
+/* =========================================
+   رابط السيرفر
+========================================= */
 
 const API_URL =
 "https://luqma-backeand-production-c2c6.up.railway.app";
 
 
-/*
-==================================================
-العناصر
-==================================================
-*/
+/* =========================================
+   العناصر
+========================================= */
 
 const imageInput =
-document.getElementById("imageInput");
+document.getElementById(
+    "imageInput"
+);
 
 const preview =
-document.getElementById("preview");
+document.getElementById(
+    "preview"
+);
 
 const previewImage =
-document.getElementById("previewImage");
+document.getElementById(
+    "previewImage"
+);
 
 const analyzeImage =
-document.getElementById("analyzeImage");
+document.getElementById(
+    "analyzeImage"
+);
 
 const foodText =
-document.getElementById("foodText");
+document.getElementById(
+    "foodText"
+);
 
 const analyzeText =
-document.getElementById("analyzeText");
+document.getElementById(
+    "analyzeText"
+);
 
 const loading =
-document.getElementById("loading");
+document.getElementById(
+    "loading"
+);
 
 const errorBox =
-document.getElementById("error");
+document.getElementById(
+    "error"
+);
 
 const result =
-document.getElementById("result");
+document.getElementById(
+    "result"
+);
 
 
 let selectedImage = null;
 
 
-/*
-==================================================
-اختيار الصورة
-==================================================
-*/
+/* =========================================
+   اختيار الصورة
+========================================= */
 
 imageInput.addEventListener(
-"change",
-function(){
+    "change",
+    function(){
 
-    const file =
-    this.files[0];
+        const file =
+            this.files[0];
 
-    if(!file){
-        return;
+        if(!file){
+            return;
+        }
+
+        selectedImage =
+            file;
+
+
+        previewImage.src =
+            URL.createObjectURL(
+                file
+            );
+
+
+        preview.style.display =
+            "block";
+
+
+        analyzeImage.disabled =
+            false;
+
+
+        hideError();
+
     }
-
-    selectedImage = file;
-
-    previewImage.src =
-    URL.createObjectURL(file);
-
-    preview.style.display =
-    "block";
-
-    analyzeImage.disabled =
-    false;
-
-    hideError();
-
-});
+);
 
 
-/*
-==================================================
-Loading
-==================================================
-*/
+/* =========================================
+   Loading
+========================================= */
 
 function startLoading(){
 
     loading.style.display =
-    "block";
+        "block";
 
     result.style.display =
-    "none";
+        "none";
 
     hideError();
 
 }
 
+
 function stopLoading(){
 
     loading.style.display =
-    "none";
+        "none";
 
 }
 
 
-/*
-==================================================
-Errors
-==================================================
-*/
+/* =========================================
+   Error
+========================================= */
 
-function showError(message){
+function showError(
+    message
+){
 
     stopLoading();
 
     errorBox.textContent =
-    message;
+        message;
 
     errorBox.style.display =
-    "block";
+        "block";
 
 }
+
 
 function hideError(){
 
     errorBox.style.display =
-    "none";
+        "none";
 
 }
 
 
-/*
-==================================================
-تحليل الصورة
-==================================================
-*/
+/* =========================================
+   تحليل الصورة
+========================================= */
 
 analyzeImage.addEventListener(
-"click",
-async function(){
+    "click",
+    async function(){
 
-    if(!selectedImage){
+        if(!selectedImage){
 
-        showError(
-            "اختر صورة أولاً."
-        );
-
-        return;
-    }
-
-    startLoading();
-
-    try{
-
-        const formData =
-        new FormData();
-
-        formData.append(
-            "image",
-            selectedImage
-        );
-
-
-        const response =
-        await fetch(
-            API_URL + "/api/analyze-image",
-            {
-                method:"POST",
-                body:formData
-            }
-        );
-
-
-        const json =
-        await response.json();
-
-
-        if(!response.ok){
-
-            throw new Error(
-                json.error ||
-                "السيرفر رفض الطلب."
+            showError(
+                "اختر صورة أولاً."
             );
+
+            return;
 
         }
 
 
-        displayResult(
-            json.data || json
-        );
+        startLoading();
 
 
-    }catch(error){
+        try{
 
-        console.error(error);
+            const formData =
+                new FormData();
 
-        showError(
-            error.message ||
-            "تعذر الاتصال بالسيرفر."
-        );
+
+            formData.append(
+                "image",
+                selectedImage
+            );
+
+
+            const response =
+                await fetch(
+                    API_URL +
+                    "/api/analyze-image",
+                    {
+                        method:
+                            "POST",
+
+                        body:
+                            formData
+                    }
+                );
+
+
+            const text =
+                await response.text();
+
+
+            let data;
+
+
+            try{
+
+                data =
+                    JSON.parse(
+                        text
+                    );
+
+            }
+
+            catch{
+
+                throw new Error(
+                    "السيرفر أرسل استجابة غير مفهومة: " +
+                    text.substring(
+                        0,
+                        200
+                    )
+                );
+
+            }
+
+
+            if(!response.ok){
+
+                throw new Error(
+                    data.error ||
+                    "فشل تحليل الصورة"
+                );
+
+            }
+
+
+            displayResult(
+                data.data ||
+                data
+            );
+
+
+        }
+
+        catch(error){
+
+            console.error(
+                "Luqma:",
+                error
+            );
+
+
+            showError(
+                error.message ||
+                "Failed to fetch"
+            );
+
+        }
 
     }
+);
 
-});
 
-
-/*
-==================================================
-تحليل النص
-==================================================
-*/
+/* =========================================
+   تحليل النص
+========================================= */
 
 analyzeText.addEventListener(
-"click",
-async function(){
+    "click",
+    async function(){
 
-    const text =
-    foodText.value.trim();
-
-    if(!text){
-
-        showError(
-            "اكتب وصف الوجبة أولاً."
-        );
-
-        return;
-    }
-
-    startLoading();
-
-    try{
-
-        const response =
-        await fetch(
-            API_URL + "/api/analyze-text",
-            {
-                method:"POST",
-
-                headers:{
-                    "Content-Type":
-                    "application/json"
-                },
-
-                body:
-                JSON.stringify({
-                    text:text
-                })
-            }
-        );
+        const text =
+            foodText.value.trim();
 
 
-        const json =
-        await response.json();
+        if(!text){
 
-
-        if(!response.ok){
-
-            throw new Error(
-                json.error ||
-                "فشل تحليل النص."
+            showError(
+                "اكتب وصف الوجبة أولاً."
             );
+
+            return;
 
         }
 
 
-        displayResult(
-            json.data || json
-        );
+        startLoading();
 
 
-    }catch(error){
+        try{
 
-        console.error(error);
+            const response =
+                await fetch(
+                    API_URL +
+                    "/api/analyze-text",
+                    {
 
-        showError(
-            error.message ||
-            "تعذر الاتصال بالسيرفر."
-        );
+                        method:
+                            "POST",
+
+                        headers:{
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                text:
+                                    text
+                            })
+
+                    }
+                );
+
+
+            const responseText =
+                await response.text();
+
+
+            let data;
+
+
+            try{
+
+                data =
+                    JSON.parse(
+                        responseText
+                    );
+
+            }
+
+            catch{
+
+                throw new Error(
+                    "السيرفر أرسل استجابة غير مفهومة"
+                );
+
+            }
+
+
+            if(!response.ok){
+
+                throw new Error(
+                    data.error ||
+                    "فشل تحليل النص"
+                );
+
+            }
+
+
+            displayResult(
+                data.data ||
+                data
+            );
+
+
+        }
+
+        catch(error){
+
+            console.error(
+                error
+            );
+
+
+            showError(
+                error.message ||
+                "Failed to fetch"
+            );
+
+        }
 
     }
+);
 
-});
 
+/* =========================================
+   عرض النتيجة
+========================================= */
 
-/*
-==================================================
-عرض النتيجة
-==================================================
-*/
-
-function displayResult(data){
+function displayResult(
+    data
+){
 
     stopLoading();
 
+
     result.style.display =
-    "block";
+        "block";
 
 
     document.getElementById(
         "foodName"
     ).textContent =
-    data.title || "وجبة";
+        data.title ||
+        "وجبة";
 
 
     document.getElementById(
         "calories"
     ).textContent =
-    data.calories ?? 0;
+        data.calories ??
+        0;
 
 
     document.getElementById(
         "protein"
     ).textContent =
-    (data.protein ?? 0) + "g";
+        (data.protein ??
+        data.macros?.protein ??
+        0) + "g";
 
 
     document.getElementById(
         "carbs"
     ).textContent =
-    (data.carbs ?? 0) + "g";
+        (data.carbs ??
+        data.macros?.carbs ??
+        0) + "g";
 
 
     document.getElementById(
         "fat"
     ).textContent =
-    (data.fat ?? 0) + "g";
+        (data.fat ??
+        data.macros?.fat ??
+        0) + "g";
 
 
-    /*
-    المكونات
-    */
+    /* =================================
+       المكونات
+    ================================= */
 
     const ingredients =
-    document.getElementById(
-        "ingredients"
-    );
+        document.getElementById(
+            "ingredients"
+        );
 
-    ingredients.innerHTML = "";
+
+    ingredients.innerHTML =
+        "";
 
 
     if(
@@ -993,56 +1334,72 @@ function displayResult(data){
     ){
 
         data.ingredients.forEach(
-        item => {
+            item => {
 
-            const row =
-            document.createElement(
-                "div"
-            );
-
-            row.className =
-            "ingredient";
-
-            const name =
-            document.createElement(
-                "span"
-            );
-
-            name.textContent =
-            item.name || "مكون";
+                const row =
+                    document.createElement(
+                        "div"
+                    );
 
 
-            const amount =
-            document.createElement(
-                "span"
-            );
-
-            amount.textContent =
-            item.amount || "";
+                row.className =
+                    "ingredient";
 
 
-            row.appendChild(name);
-            row.appendChild(amount);
+                const name =
+                    document.createElement(
+                        "span"
+                    );
 
-            ingredients.appendChild(
-                row
-            );
 
-        });
+                name.textContent =
+                    item.name ||
+                    "مكون";
+
+
+                const amount =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                amount.textContent =
+                    item.amount ||
+                    "";
+
+
+                row.appendChild(
+                    name
+                );
+
+
+                row.appendChild(
+                    amount
+                );
+
+
+                ingredients.appendChild(
+                    row
+                );
+
+            }
+        );
 
     }
 
 
-    /*
-    الخطوات
-    */
+    /* =================================
+       خطوات التحضير
+    ================================= */
 
     const steps =
-    document.getElementById(
-        "steps"
-    );
+        document.getElementById(
+            "steps"
+        );
 
-    steps.innerHTML = "";
+
+    steps.innerHTML =
+        "";
 
 
     if(
@@ -1052,51 +1409,71 @@ function displayResult(data){
     ){
 
         data.steps.forEach(
-        (step,index) => {
+            (
+                step,
+                index
+            ) => {
 
-            const row =
-            document.createElement(
-                "div"
-            );
-
-            row.className =
-            "step";
-
-
-            const number =
-            document.createElement(
-                "div"
-            );
-
-            number.className =
-            "step-num";
-
-            number.textContent =
-            index + 1;
+                const row =
+                    document.createElement(
+                        "div"
+                    );
 
 
-            const text =
-            document.createElement(
-                "div"
-            );
-
-            text.textContent =
-            step;
+                row.className =
+                    "step";
 
 
-            row.appendChild(number);
-            row.appendChild(text);
+                const number =
+                    document.createElement(
+                        "div"
+                    );
 
-            steps.appendChild(row);
 
-        });
+                number.className =
+                    "step-num";
+
+
+                number.textContent =
+                    index + 1;
+
+
+                const text =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                text.textContent =
+                    step;
+
+
+                row.appendChild(
+                    number
+                );
+
+
+                row.appendChild(
+                    text
+                );
+
+
+                steps.appendChild(
+                    row
+                );
+
+            }
+        );
 
     }
 
 
     result.scrollIntoView({
-        behavior:"smooth",
-        block:"start"
+        behavior:
+            "smooth",
+
+        block:
+            "start"
     });
 
 }
